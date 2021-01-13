@@ -2,7 +2,7 @@ package DataBases
 
 import (
     "fmt"
-    _ "github.com/go-sql-driver/mysql" //加载mysql驱动
+    _ "github.com/go-sql-driver/mysql"
     "github.com/jinzhu/gorm"
     "github.com/spf13/viper"
 )
@@ -20,7 +20,13 @@ func init()  {
         fmt.Printf("config file error: %s\n", err)
     }
 
-    Db, err = gorm.Open("mysql", "root:qgKj2017@tcp(127.0.0.1:3306)/blog?charset=utf8&parseTime=True&loc=Local&timeout=10ms")
+    username := viper.GetString(`mysql.username`)
+    url := viper.GetString(`mysql.url`)
+    password := viper.GetString(`mysql.password`)
+    database := viper.GetString(`mysql.database`)
+    mysql_params := username + ":" + password + "@tcp" + "(" + url + ")/" + database + "?charset=utf8&parseTime=True&loc=Local"
+
+    Db, err = gorm.Open("mysql", mysql_params)
     if err != nil {
         fmt.Printf("mysql connect error %v", err)
     }

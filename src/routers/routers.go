@@ -7,10 +7,14 @@ import(
 
 func InnitRouter() *gin.Engine{
     routers := gin.Default()
-    routers.GET("/", Home)
-    users:= routers.Group("/users")
-    {
-        users.GET("/",Users)
+    root := routers.Group("/")
+    {   
+        root.GET("/", Home)
+        root.POST("register", Register)
+        users := root.Group("users")
+        {
+            users.GET("/", Users)
+        }
     }
 
     return routers;

@@ -1,13 +1,14 @@
 package Models
 
 import(
-	orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/Databases"
+    orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/Databases"
 )
 
 type User struct{
-	id       int64  `json:"id"`       
-    username string `json:"username"` 
-    password string `json:"password"` 
+	ID       int64  `json:"id"`       
+    Username string `json:"username"` 
+    Password string `json:"password"` 
+    Email    string `json:"email"`
 }
 
 func (user *User) Users() (users []User, err error) {
@@ -15,4 +16,21 @@ func (user *User) Users() (users []User, err error) {
         return
     }
     return
+}
+
+func CreatUser(username, password, email string) int {
+    var user = User{
+        Username: username,
+        Password: password,
+        Email: email,
+    }
+    
+    result := orm.Db.Create(&user)
+
+    if result.Error != nil {
+       return 1
+    }else
+    {
+        return 0
+    }
 }
