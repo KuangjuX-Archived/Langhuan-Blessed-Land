@@ -2,7 +2,7 @@ package routers
 
 import(
 	"github.com/gin-gonic/gin"
-    ."github.com/KuangjuX/Lang-Huan-Blessed-Land/api"
+    ."github.com/KuangjuX/Lang-Huan-Blessed-Land/Controllers"
 )
 
 func InnitRouter() *gin.Engine{
