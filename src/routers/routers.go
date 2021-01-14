@@ -11,10 +11,12 @@ func InnitRouter() *gin.Engine{
     {   
         root.GET("/", Home)
         root.POST("register", Register)
-        users := root.Group("users")
-        {
-            users.GET("/", Users)
-        }
+        root.POST("loginByUsername", LoginByUsername)
+        root.POST("loginByEmail", LoginByEmail)
+        // users := root.Group("users")
+        // {
+            
+        // }
     }
 
     return routers;

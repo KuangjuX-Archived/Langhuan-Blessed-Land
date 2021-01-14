@@ -2,8 +2,8 @@ package Controllers
 
 import (
     "github.com/gin-gonic/gin"
-    "net/http"
-    "github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help"
 )
 
 func Register(c *gin.Context)  {
@@ -11,24 +11,36 @@ func Register(c *gin.Context)  {
     password := c.PostForm("password")
     email    := c.PostForm("email")
 
-    error_code := Models.CreatUser(username, password, email)
+    message, err := Models.CreatUser(username, password, email)
 
-    if error_code == 1 {
-        c.JSON(http.StatusOK, gin.H{
-        "error_code": 1,
-        "message": "创建失败",
-    })
+    if err == nil {
+       Help.JsonMsgWithSuccess(c, message)
     }else{
-        c.JSON(http.StatusOK, gin.H{
-            "error_code": 0,
-            "message": "创建成功",
-    })
+        Help.JsonMsgWithError(c, message, err)
     }
 }
 
-func Users(c *gin.Context){
-    c.JSON(http.StatusOK, gin.H{
-        "code" : 1,
-        "data" : "用户列表",
-    })
+
+func LoginByUsername(c *gin.Context){
+	var user Models.User
+	user.Username = c.PostForm("username")
+	user.Password = c.PostForm("password")
+	data, err := user.Login()
+	if err == nil{
+		Help.JsonDataWithSuccess(c, data)
+	}else{
+		Help.JsonError(c, err)
+	}
+}
+
+func LoginByEmail(c *gin.Context)  {
+	var user Models.User
+	user.Email = c.PostForm("email")
+	user.Password = c.PostForm("password")
+	data, err := user.Login()
+	if err == nil{
+		Help.JsonDataWithSuccess(c, data)
+	}else{
+		Help.JsonError(c, err)
+	}
 }

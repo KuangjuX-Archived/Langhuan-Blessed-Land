@@ -1,9 +1,14 @@
 package Models
 
 import(
-    orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/Databases"
-    "golang.org/x/crypto/bcrypt"
     "strings"
+    "errors"
+    "golang.org/x/crypto/bcrypt"
+    "time"
+    "fmt"
+
+    "github.com/dgrijalva/jwt-go"
+    orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/Databases"
 )
 
 type User struct{
@@ -12,6 +17,22 @@ type User struct{
     Password string `json:"password"` 
     Email    string `json:"email"`
 }
+
+var AppSecret = ""
+var AppIss = "github.com/KuangjuX/Lang-Huan-Blessed-Land"
+var ExpireTime = time.Hour * 24
+
+type userStdClaims struct {
+	jwt.StandardClaims
+	*User
+}
+
+
+// ErrUsernameRequired occurs when the username field is left blank
+var ErrUsernameRequired = errors.New("validate: username required")
+
+// ErrPasswordRequired occurs when the password field is left blank
+var ErrPasswordRequired = errors.New("validate: password required")
 
 // TrimUsername removes whitespaces in the username
 func TrimUsername(username *string) {
@@ -50,27 +71,69 @@ func VerifyPassword(hash, pass string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(pass))
 }
 
+/*jwt*/
+func jwtGenerateToken(m *User, d time.Duration) (string, error) {
+	m.Password = ""
+	expireTime := time.Now().Add(d)
+	stdClaims := jwt.StandardClaims{
+		ExpiresAt: expireTime.Unix(),
+		IssuedAt:  time.Now().Unix(),
+		Id:        fmt.Sprintf("%d", m.ID),
+		Issuer:    AppIss,
+	}
 
-func (user *User) Users() (users []User, err error) {
-    if err = orm.Db.Find(&users).Error; err != nil {
-        return
-    }
-    return
+	uClaims := userStdClaims{
+		StandardClaims: stdClaims,
+		User:           m,
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, uClaims)
+	// Sign and get the complete encoded token as a string using the secret
+	tokenString, err := token.SignedString([]byte(AppSecret))
+	
+	return tokenString, err
 }
 
-func CreatUser(username, password, email string) int {
+
+func CreatUser(username, password, email string) (string, error) {
+    hash_password, err := hash(password)
+    if err != nil{
+        return "创建失败", err
+    }
     var user = User{
         Username: username,
-        Password: password,
+        Password: string(hash_password),
         Email: email,
     }
     
     result := orm.Db.Create(&user)
-
-    if result.Error != nil {
-       return 1
-    }else
-    {
-        return 0
+    if result.Error == nil {
+        return "创建成功", nil
+    }else {
+        return "创建失败", result.Error
     }
+
+}
+
+// 0 username
+// 1 email
+func (user *User) Login() (string, error) {
+    user.ID = 0
+    if user.Password == "" {
+        return "", errors.New("password is required")
+    }
+    input_password := user.Password
+
+    err := orm.Db.Where("username = ? or email = ?",user.Username, user.Email).First(&user).Error
+    if err != nil{
+        return "", err
+    }
+
+    if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input_password)); err != nil {
+		return "", err
+	}
+	user.Password = ""
+	data, err := jwtGenerateToken(user, time.Hour*24*365)
+	return data, err
+
 }
