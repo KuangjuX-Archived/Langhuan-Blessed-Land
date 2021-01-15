@@ -1,7 +1,6 @@
 package Models
 
 import(
-    "strings"
     "errors"
     "golang.org/x/crypto/bcrypt"
     "time"
@@ -30,48 +29,11 @@ type userStdClaims struct {
 }
 
 
-// ErrUsernameRequired occurs when the username field is left blank
-var ErrUsernameRequired = errors.New("validate: username required")
-
-// ErrPasswordRequired occurs when the password field is left blank
-var ErrPasswordRequired = errors.New("validate: password required")
-
-// TrimUsername removes whitespaces in the username
-func TrimUsername(username *string) {
-	trimmed := strings.Trim(*username, " ")
-	*username = trimmed
-}
 
 func hash(password string) ([]byte, error) {
     return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }
 
-// EncryptPassword encrypts the password
-func EncryptPassword(pass *string) error {
-	hash, err := hash(*pass)
-	if err != nil {
-		return err
-	}
-	*pass = string(hash)
-	return nil
-}
-
-// Validate checks if the user has input the required fields
-func Validate(username, password string) error {
-	TrimUsername(&username)
-	if username == "" {
-		return ErrUsernameRequired
-	}
-	if password == "" {
-		return ErrPasswordRequired
-	}
-	return nil
-}
-
-// VerifyPassword verifies that the password matches the hash
-func VerifyPassword(hash, pass string) error {
-	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(pass))
-}
 
 /*jwt*/
 func jwtGenerateToken(m *User, d time.Duration) (string, error) {
@@ -138,8 +100,6 @@ func CreatUser(username, password, email string) (string, error) {
 
 }
 
-// 0 username
-// 1 email
 func (user *User) Login() (string, error) {
     user.ID = 0
     if user.Password == "" {

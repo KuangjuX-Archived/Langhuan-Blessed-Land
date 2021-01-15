@@ -6,8 +6,8 @@ import(
 	orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/Databases"
 )
 
-type Articles struct{
-	ID 		int64		`json:"id"`
+type Article struct{
+	ID 		int64		`json:"id" gorm:"primaryKey"`
 	UserID  int64		`json:"user_id"`
 	TagID	int64		`json:"tag_id"`
 	Title	string		`json:"title"`
@@ -16,8 +16,8 @@ type Articles struct{
 	Update	time.Time	`json:"update_at"`
 }
 
-func GetAllArticles() ([]Articles, error){
-	var articles []Articles
+func GetAllArticles() ([]Article, error){
+	var articles []Article
 	result := orm.Db.Find(&articles)
 	err := result.Error
 	if err != nil {
@@ -25,4 +25,16 @@ func GetAllArticles() ([]Articles, error){
 	}
 
 	return articles, nil
+}
+
+func GetArticleByTag(tag_id string) (Article, error){
+	var article Article
+	result := orm.Db.Where("tag_id = ?", tag_id).First(&article)
+	err := result.Error
+
+	if err != nil{
+		return article, err
+	}
+
+	return article, err
 }

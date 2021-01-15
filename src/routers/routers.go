@@ -15,9 +15,15 @@ func InnitRouter() *gin.Engine{
         root.POST("loginByUsername", LoginByUsername)
         root.POST("loginByEmail", LoginByEmail)
         
+        articles := root.Group("/articles")
+        {
+            articles.GET("getAllArticles", GetAllArticles)
+            articles.GET("getArticleByTag", GetArticleByTag)
+        }
+
         user := root.Group("user")
         {
-            user.GET("getArticlesByTag", Middleware.UserAuth, GetArticlesByTag)
+            user.Use(Middleware.UserAuth)
         }
     }
 
