@@ -1,6 +1,8 @@
 package Controllers
 
 import (
+	"errors"
+
     "github.com/gin-gonic/gin"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help"
@@ -9,7 +11,12 @@ import (
 func Register(c *gin.Context)  {
     username := c.PostForm("username")
     password := c.PostForm("password")
-    email    := c.PostForm("email")
+	email    := c.PostForm("email")
+	
+	if len(username) == 0 || len(password) == 0 || len(email) == 0 {
+		Help.JsonMsgWithError(c, "Fail to register.", errors.New("Expected arguments."))
+		return
+	}
 
     message, err := Models.CreatUser(username, password, email)
 
