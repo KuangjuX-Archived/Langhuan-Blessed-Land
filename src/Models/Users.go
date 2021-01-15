@@ -13,9 +13,11 @@ import(
 
 type User struct{
 	ID       int64  `json:"id"`       
-    Username string `json:"username"` 
+	Username string `json:"username"` 
+	Nickname string	`json:"nickname"`
     Password string `json:"password"` 
-    Email    string `json:"email"`
+	Email    string `json:"email"`
+	Avatar	 string `json:"avatar"`
 }
 
 var AppSecret = ""
