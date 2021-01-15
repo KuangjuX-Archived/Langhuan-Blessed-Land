@@ -94,6 +94,27 @@ func jwtGenerateToken(m *User, d time.Duration) (string, error) {
 	return tokenString, err
 }
 
+// parser token to get user message
+func JwtParserUser(tokenString string) (*User, error){
+	if tokenString == "" {
+		return nil, errors.New("no token is found in Authorization Bearer")
+	}
+
+	claims := userStdClaims{}
+	_ , err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error){
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(AppSecret), nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return claims.User, nil
+}
+
 
 func CreatUser(username, password, email string) (string, error) {
     hash_password, err := hash(password)

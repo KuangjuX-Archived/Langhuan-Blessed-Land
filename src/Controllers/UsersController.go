@@ -14,9 +14,9 @@ func Register(c *gin.Context)  {
     message, err := Models.CreatUser(username, password, email)
 
     if err == nil {
-       Help.JsonMsgWithSuccess(c, message)
+       	Help.JsonMsgWithSuccess(c, message)
     }else{
-        Help.JsonMsgWithError(c, message, err)
+    	Help.JsonMsgWithError(c, message, err)
     }
 }
 
