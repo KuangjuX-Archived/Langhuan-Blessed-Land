@@ -49,18 +49,24 @@ In Windows, you can run by `.\Lang-Huan-Blessed-Land.exe`, and in Linux , you ca
 
 **Response:**
 
-```{
+success:
+
+```json
 {
     "error_code": 0,
     "message": "创建成功"
 }
 ```
 
-```
+fail:
+
+```json
 {
     "error": "Expected arguments.",
     "error_code": 1,
     "message": "Fail to register."
 }
 ```
+
+
 
