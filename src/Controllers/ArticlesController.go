@@ -15,13 +15,33 @@ func GetAllArticles(c *gin.Context){
 	Help.JsonDataWithSuccess(c, articles)
 }
 
-func GetArticleByTag(c *gin.Context){
+func GetArticlesByTag(c *gin.Context){
 	tag_id := c.Query("tag_id")
-	data, err := Models.GetArticleByTag(tag_id)
+	data, err := Models.GetArticlesByTag(tag_id)
 
 	if err != nil {
 		Help.JsonError(c, err)
 	}
 
 	Help.JsonDataWithSuccess(c, data)
+}
+
+func GetAllArticlesByPage(c *gin.Context){
+	query := Models.ArticlePages{}
+	err := c.ShouldBindQuery(query)
+
+	if err != nil {
+		Help.JsonError(c, err)
+		return
+	}
+	list, total, err := query.Search()
+
+	if err != nil {
+		Help.JsonError(c, err)
+		return
+	}
+
+	Help.JsonPagination(c, list, total, &query.Pagination)
+
+
 }

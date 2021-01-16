@@ -18,7 +18,7 @@ func InnitRouter() *gin.Engine{
         articles := root.Group("/articles")
         {
             articles.GET("getAllArticles", GetAllArticles)
-            articles.GET("getArticleByTag", GetArticleByTag)
+            articles.GET("getArticlesByTag", GetArticlesByTag)
         }
 
         user := root.Group("user")
