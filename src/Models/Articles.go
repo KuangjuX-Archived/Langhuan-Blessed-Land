@@ -16,20 +16,8 @@ type Article struct{
 	Update	time.Time	`json:"update_at"`
 }
 
-type Pagination struct{
-	Ok    bool        `json:"ok"`
-	Size  uint        `form:"size" json:"size"`
-	Page  uint        `form:"page" json:"page"`
-	Data  interface{} `json:"data" comment:"muster be a pointer of slice gorm.Model"` // save pagination list
-	Total uint        `json:"total"`
-}
 
-type ArticlePages struct{
-	Article
-	Pagination
-	FromTime string `form:"from_time"` 
-	ToTime   string `form:"to_time"`  
-}
+
 
 func GetAllArticles() ([]Article, error){
 	var articles []Article
@@ -54,10 +42,24 @@ func GetArticlesByTag(tag_id string) ([]Article, error){
 	return articles, err
 }
 
-func (o ArticlePages) Search() (list *[]Article, total uint, err error){
-	list = &[]ArticlePages{}
+func GetArticlesByPage(page, size int, params map[string]string) (interface{}, error){
+	DB := orm.Db
+	articles := make([]Article, 0)
+	if user_id, ok := params["user_id"]; ok == true {
+		DB = DB.Where("user_id = ?", user_id)
+	}
 
-	tx := orm.Db(o.Article)
+	if tag_id, ok := params["tag_id"]; ok == true {
+		DB = DB.Where("tag_id = ?", tag_id)
+	}
 
+	if page > 0 && size > 0 {
+		DB = DB.Limit(size).Offset((page - 1)*size)
+	}
 
+	if err := DB.Find(&articles).Error; err != nil{
+		return nil, err
+	}
+
+	return articles, nil
 }
