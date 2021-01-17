@@ -2,10 +2,12 @@ package Controllers
 
 import (
 	"errors"
+	"strconv"
 
     "github.com/gin-gonic/gin"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Services"
 )
 
 func Register(c *gin.Context)  {
@@ -50,4 +52,22 @@ func LoginByEmail(c *gin.Context)  {
 	}else{
 		Help.JsonError(c, err)
 	}
+}
+
+func GetUserArticles(c *gin.Context){
+	// page, _ := strconv.Atoi(c.Query("page"))
+	// size, _ := strconv.Atoi(c.Query("size"))
+	user, _ := Services.GetUserByToken(c)
+	// user_id := user
+
+	// params := make(map[string]string)
+	// params["user_id"] = user_id
+
+	// data, err := Models.GetArticlesByPage(page, size, params)
+	// if err != nil {
+	// 	Help.JsonError(c, err)
+	// }
+
+	// Help.JsonDataWithSuccess(c, data)
+	Help.JsonDataWithSuccess(c, user)
 }

@@ -25,6 +25,7 @@ func InnitRouter() *gin.Engine{
         user := root.Group("user")
         {
             user.Use(Middleware.UserAuth)
+            user.GET("getUserArticles", GetUserArticles)
         }
     }
 
