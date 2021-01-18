@@ -20,6 +20,7 @@ func InnitRouter() *gin.Engine{
             articles.GET("getAllArticles", GetAllArticles)
             articles.GET("getAllArticlesByPage", GetAllArticlesByPage)
             articles.GET("getArticlesByTag", GetArticlesByTag)
+            articles.GET("searchArticles", SearchArticles)
         }
 
         user := root.Group("user")

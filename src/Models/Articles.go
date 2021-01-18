@@ -101,3 +101,15 @@ func DeleteArticle(article_id int64) (error) {
 	}
 	return nil
 }
+
+func SearchArticles(search_text string) (interface{}, error) {
+	DB := orm.Db
+	articles := make([]Article, 0)
+	result := DB.Where("title LIKE ? or content LIKE ?","%" + search_text + "%", "%" + search_text + "%").Find(&articles)
+
+	if err := result.Error; err != nil{
+		return nil, err
+	}
+
+	return articles, nil
+}

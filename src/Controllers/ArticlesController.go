@@ -50,3 +50,16 @@ func GetAllArticlesByPage(c *gin.Context){
 	Help.JsonDataWithSuccess(c, data)
 
 }
+
+
+func SearchArticles(c *gin.Context){
+	search_text := c.Query("search_text")
+
+	data, err := Models.SearchArticles(search_text)
+	if err != nil{
+		Help.JsonMsgWithError(c, "Fail to search content", err)
+		return
+	}
+
+	Help.JsonDataWithSuccess(c, data)
+}
