@@ -38,7 +38,7 @@ func GetAllArticlesByPage(c *gin.Context){
 	}
 
 	if tag_id, is_exist := c.GetQuery("tag_id"); is_exist == true {
-		params[tag_id] = tag_id
+		params["tag_id"] = tag_id
 	}
 
 	data, err := Models.GetArticlesByPage(page, size, params)

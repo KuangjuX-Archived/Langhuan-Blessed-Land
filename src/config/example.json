@@ -2,6 +2,7 @@
     "mysql": {
         "url": "",
         "username": "",
-        "password": ""
+        "password": "",
+        "database": ""
     }
 }

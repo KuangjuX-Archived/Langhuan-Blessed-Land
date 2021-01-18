@@ -7,7 +7,6 @@ import (
     "github.com/spf13/viper"
 )
 
-type DB = *gorm.DB
 
 var Db *gorm.DB
 
