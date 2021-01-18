@@ -123,7 +123,7 @@ func (user *User) Login() (string, error) {
 
 func ModifyNickname(user_id int64, new_nickname string) (error){
 	DB := orm.Db
-	DB = DB.Model(User{}).Where("user_id = ?", user_id).Updates(User{Nickname : new_nickname})
+	DB = DB.Model(User{}).Where("id = ?", user_id).Updates(User{Nickname : new_nickname})
 	if DB.Error != nil {
 		return DB.Error
 	}
@@ -132,7 +132,7 @@ func ModifyNickname(user_id int64, new_nickname string) (error){
 
 func ModifyEmail(user_id int64, new_email string) (error){
 	DB := orm.Db
-	DB = DB.Model(User{}).Where("user_id = ?", user_id).Updates(User{Email: new_email})
+	DB = DB.Model(User{}).Where("id = ?", user_id).Updates(User{Email: new_email})
 	if DB.Error != nil {
 		return DB.Error
 	}
@@ -141,7 +141,7 @@ func ModifyEmail(user_id int64, new_email string) (error){
 
 func ModifyAvatar(user_id int64, new_avatar string) (error){
 	DB := orm.Db
-	DB = DB.Model(User{}).Where("user_id = ?", user_id).Updates(User{Avatar: new_avatar})
+	DB = DB.Model(User{}).Where("id = ?", user_id).Updates(User{Avatar: new_avatar})
 	if DB.Error != nil {
 		return DB.Error
 	}

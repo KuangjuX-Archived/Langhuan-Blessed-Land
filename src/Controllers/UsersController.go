@@ -103,8 +103,9 @@ func ModifyEmail(c *gin.Context){
 
 func ModifyAvatar(c *gin.Context){
 	avatar, _ := c.FormFile("new_avatar")
-	avatar_name := (time.Now()).String() + "-" + avatar.Filename
-	avatar_path := "./storage/app/image/" + avatar_name
+	avatar_name := strconv.FormatInt(time.Now().Unix(), 10) + "-" + avatar.Filename
+	avatar_path := "storage/app/image/" + avatar_name
+	
 
 	if err := c.SaveUploadedFile(avatar, avatar_path); err != nil {
 		Help.JsonMsgWithError(c, "Fail to upload image", err)

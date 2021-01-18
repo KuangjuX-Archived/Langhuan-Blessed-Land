@@ -29,6 +29,9 @@ func InnitRouter() *gin.Engine{
             user.POST("modifyNickname", ModifyNickname)
             user.POST("modifyEmail", ModifyEmail)
             user.POST("modifyAvatar", ModifyAvatar)
+            user.POST("uploadArticle", UploadArticle)
+            user.POST("deleteArticle", DeleteArticle)
+            user.POST("modifyArticle", ModifyArticle)
         }
     }
 
