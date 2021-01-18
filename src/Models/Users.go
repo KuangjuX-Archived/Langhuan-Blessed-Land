@@ -123,27 +123,28 @@ func (user *User) Login() (string, error) {
 
 func ModifyNickname(user_id int64, new_nickname string) (error){
 	DB := orm.Db
-	DB = DB.Model(User{}).Where("id = ?", user_id).Updates(User{Nickname : new_nickname})
-	if DB.Error != nil {
-		return DB.Error
+	result := DB.Model(User{}).Where("id = ?", user_id).Updates(User{Nickname : new_nickname})
+
+	if err := result.Error; err != nil {
+		return err
 	}
 	return nil
 }
 
 func ModifyEmail(user_id int64, new_email string) (error){
 	DB := orm.Db
-	DB = DB.Model(User{}).Where("id = ?", user_id).Updates(User{Email: new_email})
-	if DB.Error != nil {
-		return DB.Error
+	result := DB.Model(User{}).Where("id = ?", user_id).Updates(User{Email: new_email})
+	if err := result.Error; err != nil {
+		return err
 	}
 	return nil
 }
 
 func ModifyAvatar(user_id int64, new_avatar string) (error){
 	DB := orm.Db
-	DB = DB.Model(User{}).Where("id = ?", user_id).Updates(User{Avatar: new_avatar})
-	if DB.Error != nil {
-		return DB.Error
+	result := DB.Model(User{}).Where("id = ?", user_id).Updates(User{Avatar: new_avatar})
+	if err := result.Error; err != nil {
+		return err
 	}
 	return nil
 }
