@@ -63,3 +63,41 @@ func GetArticlesByPage(page, size int, params map[string]string) (interface{}, e
 
 	return articles, nil
 }
+
+func UploadArticle(user_id, tag_id int64, title, content string) (error) {
+	article := Article{
+		UserID: user_id,
+		TagID: tag_id,
+		Title: title,
+		Content: content,
+	}
+
+	DB := orm.Db
+	DB = DB.Create(&article)
+	if err := DB.Error; err != nil{
+		return err
+	}
+	return nil
+}
+
+func ModifyArticle(article_id, tag_id int64, title, content string) (error){
+	DB := orm.Db
+	DB = DB.Model(Article{}).Where("id = ?", article_id).Updates(Article{
+		Title: title,
+		TagID: tag_id,
+		Content: content })
+	if DB.Error != nil {
+		return DB.Error
+	}
+	return nil
+}
+
+func DeleteArticle(article_id int64) (error) {
+	DB := orm.Db
+	DB = DB.Delete(&Article{}, article_id)
+
+	if DB.Error != nil {
+		return DB.Error
+	}
+	return nil
+}

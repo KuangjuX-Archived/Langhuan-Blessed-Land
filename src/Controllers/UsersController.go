@@ -122,3 +122,43 @@ func ModifyAvatar(c *gin.Context){
 	Help.JsonMsgWithSuccess(c, "Success to upload image")
 
 }
+
+func UploadArticle(c *gin.Context){
+	user, _ := Services.GetUserByToken(c)
+	user_id := user.(Models.User).ID
+	tag_id, _ := strconv.ParseInt(c.PostForm("tag_id"), 10, 64)
+	title := c.PostForm("title")
+	content := c.PostForm("content")
+
+	if err := Models.UploadArticle(user_id, tag_id, title, content); err != nil {
+		Help.JsonError(c, err)
+		return
+	}
+
+	Help.JsonSuccess(c)
+}
+
+func ModifyArticle(c *gin.Context){
+	article_id, _ := strconv.ParseInt(c.PostForm("article_id"), 10, 64)
+	tag_id, _ := strconv.ParseInt(c.PostForm("tag_id"), 10, 64)
+	title := c.PostForm("title")
+	content := c.PostForm("content")
+
+	if err := Models.ModifyArticle(article_id, tag_id, title, content); err != nil {
+		Help.JsonError(c, err)
+		return
+	}
+
+	Help.JsonSuccess(c)
+}
+
+func DeleteArticle(c *gin.Context){
+	article_id, _ := strconv.ParseInt(c.PostForm("article_id"), 10, 64)
+
+	if err := Models.DeleteArticle(article_id); err != nil {
+		Help.JsonError(c, err)
+		return
+	}
+
+	Help.JsonSuccess(c)
+}
