@@ -26,6 +26,9 @@ func InnitRouter() *gin.Engine{
         {
             user.Use(Middleware.UserAuth)
             user.GET("getUserArticles", GetUserArticles)
+            user.POST("modifyNickname", ModifyNickname)
+            user.POST("modifyEmail", ModifyEmail)
+            user.POST("modifyAvatar", ModifyAvatar)
         }
     }
 

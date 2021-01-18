@@ -14,6 +14,12 @@ func JsonDataWithSuccess(c *gin.Context, data interface{}){
 	})
 }
 
+func JsonSuccess(c *gin.Context){
+	c.JSON(http.StatusOK, gin.H{
+		"error_code": 0,
+	})
+}
+
 func JsonError(c *gin.Context, err error){
 	c.JSON(http.StatusOK, gin.H{
 		"error_code": 1,
