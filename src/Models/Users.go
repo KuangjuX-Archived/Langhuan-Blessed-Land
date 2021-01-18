@@ -83,7 +83,7 @@ func JwtParserUser(tokenString string) (*User, error){
 func CreatUser(username, password, email string) (string, error) {
     hash_password, err := hash(password)
     if err != nil{
-        return "创建失败", err
+        return "Fail to create", err
     }
     var user = User{
         Username: username,
@@ -93,9 +93,9 @@ func CreatUser(username, password, email string) (string, error) {
     
     result := orm.Db.Create(&user)
     if result.Error == nil {
-        return "创建成功", nil
+        return "Success to create", nil
     }else {
-        return "创建失败", result.Error
+        return "Fail to create", result.Error
     }
 
 }
