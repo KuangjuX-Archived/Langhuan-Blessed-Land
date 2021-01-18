@@ -54,8 +54,10 @@ func GetAllArticlesByPage(c *gin.Context){
 
 func SearchArticles(c *gin.Context){
 	search_text := c.Query("search_text")
+	page, _ := strconv.Atoi(c.Query("page"))
+	size, _ := strconv.Atoi(c.Query("size"))
 
-	data, err := Models.SearchArticles(search_text)
+	data, err := Models.SearchArticles(search_text, page, size)
 	if err != nil{
 		Help.JsonMsgWithError(c, "Fail to search content", err)
 		return

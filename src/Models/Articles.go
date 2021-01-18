@@ -2,6 +2,7 @@ package Models
 
 import(
 	"time"
+	"errors"
 
 	orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/Databases"
 )
@@ -102,10 +103,16 @@ func DeleteArticle(article_id int64) (error) {
 	return nil
 }
 
-func SearchArticles(search_text string) (interface{}, error) {
+func SearchArticles(search_text string, page, size int) (interface{}, error) {
 	DB := orm.Db
 	articles := make([]Article, 0)
-	result := DB.Where("title LIKE ? or content LIKE ?","%" + search_text + "%", "%" + search_text + "%").Find(&articles)
+	DB = DB.Where("title LIKE ? or content LIKE ?","%" + search_text + "%", "%" + search_text + "%")
+	if page < 0 || size < 0 {
+		return nil, errors.New("Invalid page")
+	}
+
+	DB = DB.Limit(size).Offset((page - 1)* size)
+	result := DB.Find(&articles)
 
 	if err := result.Error; err != nil{
 		return nil, err
