@@ -1,7 +1,6 @@
 package Services
 
 import(
-	"github.com/gin-gonic/gin"
 
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
 )
@@ -12,7 +11,7 @@ type Comments struct{
 	ChildComments	[]Comments
 }
 
-func BFSComments(article_id int, c *gin.Context)(interface{}, error){
+func BFSComments(article_id int)(interface{}, error){
 	comments, err := Models.GetCommentsByArticle(article_id)
 	if err != nil{
 		return nil, err
@@ -35,7 +34,7 @@ func BFSComments(article_id int, c *gin.Context)(interface{}, error){
 		id := v.ParentComment.ID
 		var m *[]Comments
 		m = &v.ChildComments
-		dfs(id, comments, m, c)
+		dfs(id, comments, m)
 		data = append(data, v)
 	}
 
@@ -43,7 +42,7 @@ func BFSComments(article_id int, c *gin.Context)(interface{}, error){
 
 }
 
-func dfs(id int, comments []Comment, m *[]Comments, c *gin.Context){
+func dfs(id int, comments []Comment, m *[]Comments){
 	for _, v := range comments{
 		if v.ToCommentID == id{
 			var init_comment Comments
@@ -52,7 +51,7 @@ func dfs(id int, comments []Comment, m *[]Comments, c *gin.Context){
 			*m = append(*m, init_comment)
 			temp := *m
 			new_id := v.ID
-			dfs(new_id, comments, &temp[len(temp)-1].ChildComments, c)
+			dfs(new_id, comments, &temp[len(temp)-1].ChildComments)
 		}
 	}
 	return

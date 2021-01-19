@@ -162,3 +162,16 @@ func DeleteArticle(c *gin.Context){
 
 	Help.JsonSuccess(c)
 }
+
+func LikeArticle(c *gin.Context){
+	article_id, _ := strconv.ParseInt(c.PostForm("article_id"), 10, 64)
+	user, _ := Services.GetUserByToken(c)
+	user_id := user.(Models.User).ID
+	likes,_ := strconv.ParseInt(c.PostForm("likes"), 10, 64)
+
+	if err := Models.LikeArticle(article_id, user_id, likes); err != nil{
+		Help.JsonError(c, err)
+		return
+	}
+	Help.JsonSuccess(c)
+}

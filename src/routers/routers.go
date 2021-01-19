@@ -34,6 +34,7 @@ func InnitRouter() *gin.Engine{
             user.POST("uploadArticle", UploadArticle)
             user.POST("deleteArticle", DeleteArticle)
             user.POST("modifyArticle", ModifyArticle)
+            user.POST("likeArticle", LikeArticle)
         }
     }
 

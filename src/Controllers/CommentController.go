@@ -11,7 +11,7 @@ import(
 func GetCommentsByArticle(c *gin.Context){
 	article_id, _ := strconv.Atoi(c.Query("article_id"))
 	
-	data, err := Services.BFSComments(article_id, c)
+	data, err := Services.BFSComments(article_id)
 	if err != nil{
 		Help.JsonError(c, err)
 		return

@@ -11,7 +11,7 @@ type Article struct{
 	ID 		int64		`json:"id" gorm:"primaryKey" form:"id"`
 	UserID  int64		`json:"user_id" form:"user_id"`
 	TagID	int64		`json:"tag_id" form:"tag_id"`
-	Likes	int			`json:"likes"`
+	Likes	int64			`json:"likes"`
 	Title	string		`json:"title"`
 	Content	string		`json:"content"`
 	Created time.Time	`json:"created_at"`
@@ -120,4 +120,27 @@ func SearchArticles(search_text string, page, size int) (interface{}, error) {
 	}
 
 	return articles, nil
+}
+
+func LikeArticle(article_id, user_id ,likes int64)(error){
+	DB := orm.Db
+	result := DB.Where("article_id = ?", article_id).Where("user_id = ?", user_id).Find(&LikesMap{})
+	if row := result.RowsAffected; row >= 1{
+		return errors.New("You have liked.")
+	}
+
+	result = DB.Model(&Article{}).Where("article_id = ?", article_id).Where("user_id = ?", user_id).Update(Article{
+		Likes: likes+1	,
+	})
+
+	result2 := DB.Create(LikesMap{
+		UserID: user_id,
+		ArticleID: article_id,
+	})
+
+	if result.Error != nil && result2.Error != nil{
+		return nil
+	}
+
+	return errors.New(result.Error.Error() + result2.Error.Error())
 }
