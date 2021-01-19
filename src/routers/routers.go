@@ -21,6 +21,7 @@ func InnitRouter() *gin.Engine{
             articles.GET("getAllArticlesByPage", GetAllArticlesByPage)
             articles.GET("getArticlesByTag", GetArticlesByTag)
             articles.GET("searchArticles", SearchArticles)
+            articles.GET("getCommentsByArticle",GetCommentsByArticle)
         }
 
         user := root.Group("user")

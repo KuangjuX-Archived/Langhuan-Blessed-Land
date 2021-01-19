@@ -11,6 +11,7 @@ type Article struct{
 	ID 		int64		`json:"id" gorm:"primaryKey" form:"id"`
 	UserID  int64		`json:"user_id" form:"user_id"`
 	TagID	int64		`json:"tag_id" form:"tag_id"`
+	Likes	int			`json:"likes"`
 	Title	string		`json:"title"`
 	Content	string		`json:"content"`
 	Created time.Time	`json:"created_at"`
