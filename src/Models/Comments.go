@@ -12,8 +12,8 @@ type Comment struct{
 	ArticleID	int			`json:"article_id"`
 	ToCommentID	int			`json:"to_comment_id"`
 	Content		string		`json:"content"`
-	CreatedAt	time.Time	`json:"created_at"`
-	UpdateAt	time.Time 	`json:"update_at"`
+	CreatedAt	time.Time	`json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt	time.Time 	`json:"updated_at" gorm:"autoUpdateTime"`
 }
 
 func GetCommentsByArticle(article_id int)([]Comment, error){

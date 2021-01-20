@@ -8,14 +8,14 @@ import(
 )
 
 type Article struct{
-	ID 		int64		`json:"id" gorm:"primaryKey" form:"id"`
-	UserID  int64		`json:"user_id" form:"user_id"`
-	TagID	int64		`json:"tag_id" form:"tag_id"`
-	Likes	int64			`json:"likes"`
-	Title	string		`json:"title"`
-	Content	string		`json:"content"`
-	Created time.Time	`json:"created_at"`
-	Update	time.Time	`json:"update_at"`
+	ID 			int64		`json:"id" gorm:"primaryKey" form:"id"`
+	UserID  	int64		`json:"user_id" form:"user_id"`
+	TagID		int64		`json:"tag_id" form:"tag_id"`
+	Likes		int64		`json:"likes"`
+	Title		string		`json:"title"`
+	Content		string		`json:"content"`
+	CreatedAt 	time.Time	`json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt	time.Time	`json:"updated_at" gorm:"autoUpdateTime"`
 }
 
 
@@ -129,8 +129,8 @@ func LikeArticle(article_id, user_id ,likes int64)(error){
 		return errors.New("You have liked.")
 	}
 
-	result = DB.Model(&Article{}).Where("article_id = ?", article_id).Where("user_id = ?", user_id).Update(Article{
-		Likes: likes+1	,
+	result = DB.Model(&Article{}).Where("id = ?", article_id).Update(Article{
+		Likes: likes + 1	,
 	})
 
 	result2 := DB.Create(LikesMap{

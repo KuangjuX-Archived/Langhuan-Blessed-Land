@@ -11,12 +11,14 @@ import(
 )
 
 type User struct{
-	ID       int64  `json:"id"`       
-	Username string `json:"username"` 
-	Nickname string	`json:"nickname"`
-    Password string `json:"password"` 
-	Email    string `json:"email"`
-	Avatar	 string `json:"avatar"`
+	ID       	int64  		`json:"id"`       
+	Username 	string 		`json:"username"` 
+	Nickname 	string		`json:"nickname"`
+    Password 	string 		`json:"password"` 
+	Email    	string 		`json:"email"`
+	Avatar	 	string 		`json:"avatar"`
+	CreatedAt 	time.Time	`json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt	time.Time	`json:"updated_at" gorm:"autoUpdateTime"`
 }
 
 var AppSecret = ""
