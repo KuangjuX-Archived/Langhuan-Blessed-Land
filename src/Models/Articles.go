@@ -19,7 +19,11 @@ type Article struct{
 }
 
 
-
+func findOneArticle(article_id int64)(Article, error){
+	var article Article
+	result := orm.Db.Where("id = ?",article_id).First(&article)
+	return article, result.Error
+}
 
 func GetAllArticles() ([]Article, error){
 	var articles []Article
@@ -122,25 +126,33 @@ func SearchArticles(search_text string, page, size int) (interface{}, error) {
 	return articles, nil
 }
 
-func LikeArticle(article_id, user_id ,likes int64)(error){
+
+func LikeArticle(article_id, user_id int64)(error){
 	DB := orm.Db
+	
+
 	result := DB.Where("article_id = ?", article_id).Where("user_id = ?", user_id).Find(&LikesMap{})
 	if row := result.RowsAffected; row >= 1{
 		return errors.New("You have liked.")
 	}
 
-	result = DB.Model(&Article{}).Where("id = ?", article_id).Update(Article{
-		Likes: likes + 1	,
+	article, _ := findOneArticle(article_id)
+
+	result1 := DB.Model(&Article{}).Where("id = ?", article_id).Update(Article{
+		Likes: article.Likes + 1,
 	})
 
-	result2 := DB.Create(LikesMap{
+	result2 := DB.Create(&LikesMap{
 		UserID: user_id,
 		ArticleID: article_id,
 	})
 
-	if result.Error != nil && result2.Error != nil{
-		return nil
+
+	if result1.Error != nil{
+		return result1.Error
+	}else if result2.Error != nil {
+		return result2.Error
 	}
 
-	return errors.New(result.Error.Error() + result2.Error.Error())
+	return nil
 }

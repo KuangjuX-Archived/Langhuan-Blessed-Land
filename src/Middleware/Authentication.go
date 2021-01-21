@@ -37,3 +37,5 @@ func authentication(c *gin.Context){
 func UserAuth(c *gin.Context){
 	authentication(c)
 }
+
+

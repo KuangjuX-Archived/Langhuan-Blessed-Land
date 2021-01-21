@@ -8,7 +8,6 @@ import (
     "github.com/gin-gonic/gin"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help"
-	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Services"
 )
 
 func Register(c *gin.Context)  {
@@ -58,7 +57,7 @@ func LoginByEmail(c *gin.Context)  {
 func GetUserArticles(c *gin.Context){
 	page, _ := strconv.Atoi(c.Query("page"))
 	size, _ := strconv.Atoi(c.Query("size"))
-	user, _ := Services.GetUserByToken(c)
+	user, _ := Help.GetUserByToken(c)
 	user_id := user.(Models.User).ID
 
 	params := make(map[string]string)
@@ -76,7 +75,7 @@ func GetUserArticles(c *gin.Context){
 
 func ModifyNickname(c *gin.Context){
 	new_nickname := c.PostForm("new_nickname")
-	user, _ := Services.GetUserByToken(c)
+	user, _ := Help.GetUserByToken(c)
 	user_id := user.(Models.User).ID
 
 	err := Models.ModifyNickname(user_id, new_nickname)
@@ -90,7 +89,7 @@ func ModifyNickname(c *gin.Context){
 
 func ModifyEmail(c *gin.Context){
 	new_email := c.PostForm("new_email")
-	user, _ := Services.GetUserByToken(c)
+	user, _ := Help.GetUserByToken(c)
 	user_id := user.(Models.User).ID
 
 	err := Models.ModifyEmail(user_id, new_email)
@@ -112,7 +111,7 @@ func ModifyAvatar(c *gin.Context){
 		return
 	}
 	
-	user, _ := Services.GetUserByToken(c)
+	user, _ := Help.GetUserByToken(c)
 	user_id := user.(Models.User).ID
 	if err := Models.ModifyAvatar(user_id, avatar_name); err != nil {
 		Help.JsonMsgWithError(c, "Fail to store image into database", err)
@@ -124,7 +123,7 @@ func ModifyAvatar(c *gin.Context){
 }
 
 func UploadArticle(c *gin.Context){
-	user, _ := Services.GetUserByToken(c)
+	user, _ := Help.GetUserByToken(c)
 	user_id := user.(Models.User).ID
 	tag_id, _ := strconv.ParseInt(c.PostForm("tag_id"), 10, 64)
 	title := c.PostForm("title")
@@ -165,11 +164,15 @@ func DeleteArticle(c *gin.Context){
 
 func LikeArticle(c *gin.Context){
 	article_id, _ := strconv.ParseInt(c.PostForm("article_id"), 10, 64)
-	user, _ := Services.GetUserByToken(c)
-	user_id := user.(Models.User).ID
-	likes,_ := strconv.ParseInt(c.PostForm("likes"), 10, 64)
+	user, err := Help.GetUserByToken(c)
 
-	if err := Models.LikeArticle(article_id, user_id, likes); err != nil{
+	if err != nil{
+		Help.JsonError(c, err)
+	}
+
+	user_id := user.(Models.User).ID
+
+	if err := Models.LikeArticle(article_id, user_id); err != nil{
 		Help.JsonError(c, err)
 		return
 	}

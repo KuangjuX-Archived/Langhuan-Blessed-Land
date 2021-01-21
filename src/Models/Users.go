@@ -7,7 +7,7 @@ import(
     "fmt"
 
     "github.com/dgrijalva/jwt-go"
-    orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/Databases"
+	orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/Databases"
 )
 
 type User struct{
@@ -80,6 +80,7 @@ func JwtParserUser(tokenString string) (*User, error){
 
 	return claims.User, nil
 }
+
 
 
 func CreatUser(username, password, email string) (string, error) {
