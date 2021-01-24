@@ -4,6 +4,7 @@ import(
 	"github.com/gin-gonic/gin"
     ."github.com/KuangjuX/Lang-Huan-Blessed-Land/Controllers"
     "github.com/KuangjuX/Lang-Huan-Blessed-Land/Middleware"
+    "github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/WebSocketService"
 )
 
 func InnitRouter() *gin.Engine{
@@ -35,6 +36,13 @@ func InnitRouter() *gin.Engine{
             user.POST("deleteArticle", DeleteArticle)
             user.POST("modifyArticle", ModifyArticle)
             user.POST("likeArticle", LikeArticle)
+            
+            userchat := user.Group("chat")
+            {
+                hub := WebSocketService.NewHub()
+                go hub.Run()
+                userchat.GET("/", func(c *gin.Context){WebSocketService.ServeWs(hub, c)})
+            }
         }
     }
 
