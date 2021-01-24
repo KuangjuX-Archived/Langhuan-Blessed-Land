@@ -26,7 +26,7 @@ window.onload = function () {
         return false;
     };
     if (window["WebSocket"]) {
-        test_url = "ws://127.0.0.1:8081/api/user/chat/?user_name=jiangzhemin&room_id=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDMwMjc2NjUsImp0aSI6IjIiLCJpYXQiOjE2MTE0OTE2NjUsImlzcyI6ImdpdGh1Yi5jb20vS3VhbmdqdVgvTGFuZy1IdWFuLUJsZXNzZWQtTGFuZCIsImlkIjoyLCJ1c2VybmFtZSI6Ikt1YW5nanVYIiwibmlja25hbWUiOiIiLCJwYXNzd29yZCI6IiIsImVtYWlsIjoicWN4QHRqdS5lZHUuY24iLCJhdmF0YXIiOiIxNjExMjQwNDA3LXdhbGxoYXZlbi0xa2pvZ2cuanBnIiwiY3JlYXRlZF9hdCI6IjIwMjEtMDEtMTRUMjA6NTY6NDgrMDg6MDAiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wMS0yMVQyMjo0Njo0OCswODowMCJ9.q_1bhM-02OgUvTT0_pish9lZu7B-IdDgrfmczwoOoCI"
+        test_url = "ws://127.0.0.1:8081/api/user/chat/?room_id=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDMwMjc2NjUsImp0aSI6IjIiLCJpYXQiOjE2MTE0OTE2NjUsImlzcyI6ImdpdGh1Yi5jb20vS3VhbmdqdVgvTGFuZy1IdWFuLUJsZXNzZWQtTGFuZCIsImlkIjoyLCJ1c2VybmFtZSI6Ikt1YW5nanVYIiwibmlja25hbWUiOiIiLCJwYXNzd29yZCI6IiIsImVtYWlsIjoicWN4QHRqdS5lZHUuY24iLCJhdmF0YXIiOiIxNjExMjQwNDA3LXdhbGxoYXZlbi0xa2pvZ2cuanBnIiwiY3JlYXRlZF9hdCI6IjIwMjEtMDEtMTRUMjA6NTY6NDgrMDg6MDAiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wMS0yMVQyMjo0Njo0OCswODowMCJ9.q_1bhM-02OgUvTT0_pish9lZu7B-IdDgrfmczwoOoCI"
         conn = new WebSocket(test_url);
         conn.onclose = function (evt) {
             var item = document.createElement("div");
