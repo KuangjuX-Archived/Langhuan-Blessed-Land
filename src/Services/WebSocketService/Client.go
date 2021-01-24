@@ -12,6 +12,8 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/gorilla/websocket"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
 )
 
 
@@ -137,24 +139,25 @@ func (c *Client) writePump() {
 	}
 }
 
-// ChatRequest 聊天室请求
-type ChatRequest struct {
-	RoomID   string `json:"room_id" form:"room_id"`
-	UserID   int    `json:"user_id" form:"user_id"`
-	UserName string `json:"user_name" form:"user_name"`
-}
 
 // ServeWs handles websocket requests from the peer.
 func ServeWs(hub *Hub, c *gin.Context) {
 	// 获取前端数据
-	var req ChatRequest
-	if err := c.ShouldBind(&req); err != nil {
-		log.Printf("ServeWs err:%v\n", err)
-		c.JSON(http.StatusOK, gin.H{"errno": "-1", "errmsg": "参数不匹配，请重试"})
+	// var req ChatRequest
+	// if err := c.ShouldBind(&req); err != nil {
+	// 	log.Printf("ServeWs err:%v\n", err)
+	// 	c.JSON(http.StatusOK, gin.H{"errno": "-1", "errmsg": "参数不匹配，请重试"})
+	// 	return
+	// }
+	res, err := Help.GetUserByToken(c)
+	if err != nil{
+		Help.JsonError(c, err)
 		return
 	}
-	userName := req.UserName
-	roomID := req.RoomID
+	userInfo, _ := res.(Models.User)
+
+	userName := userInfo.Username
+	roomID := c.Query("room_id")
 	// 获取redis连接(暂未使用)
 	// pool := c.MustGet("test").(*redis.Pool)
 	// redisConn := pool.Get()
