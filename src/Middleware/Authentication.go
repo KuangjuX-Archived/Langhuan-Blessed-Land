@@ -14,7 +14,7 @@ const contextKeyUserObj = "User"
 const bearerLength = len("Bearer ")
 
 func authentication(c *gin.Context){
-	token, ok := c.GetQuery("_t")
+	token, ok := c.GetQuery("token")
 	if !ok {
 		hToken := c.GetHeader("Authorization")
 		if len(hToken) < bearerLength {
