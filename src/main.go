@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/routers"
-	orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/Databases"
+	orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/DataBases/mysql"
 )
 
 func main() {

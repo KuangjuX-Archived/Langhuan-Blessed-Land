@@ -4,5 +4,11 @@
         "username": "",
         "password": "",
         "database": ""
+    },
+
+    "redis":{
+        "server": "",
+        "password": "",
+        "databse": ""
     }
 }

@@ -3,7 +3,7 @@ package Models
 import (
 	"time"
 
-	orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/Databases"
+	orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/DataBases/mysql"
 )
 
 type Comment struct{

@@ -16,17 +16,30 @@ func Register(c *gin.Context)  {
 	email    := c.PostForm("email")
 	
 	if len(username) == 0 || len(password) == 0 || len(email) == 0 {
-		Help.JsonMsgWithError(c, "Fail to register.", errors.New("Expected arguments."))
+		Help.JsonMsgWithError(c, "Fail to register.", errors.New("Too few arguments."))
+		return
+	}
+
+	exist, err := Models.IsExistUser(username)
+	if err != nil{
+		Help.JsonMsgWithError(c, "Fail to register", err)
+		return
+	}
+
+	if !exist{
+		Help.JsonMsgWithSuccess(c, "Username has exist. Please enter a new username.")
 		return
 	}
 
     message, err := Models.CreatUser(username, password, email)
 
-    if err == nil {
-       	Help.JsonMsgWithSuccess(c, message)
-    }else{
-    	Help.JsonMsgWithError(c, message, err)
-    }
+	
+	if err != nil {
+		Help.JsonMsgWithError(c, message, err)
+		return
+	}
+
+	Help.JsonMsgWithSuccess(c, message)
 }
 
 

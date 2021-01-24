@@ -1,6 +1,7 @@
-package DataBases
+package mysql
 
 import (
+
     "fmt"
     _ "github.com/go-sql-driver/mysql"
     "github.com/jinzhu/gorm"
@@ -9,9 +10,11 @@ import (
 
 
 var Db *gorm.DB
+var ErrorRecordNotFound error
 
 
 func init()  {
+    ErrorRecordNotFound = gorm.ErrRecordNotFound 
     var err error
 
     // read mysql information from config file

@@ -7,7 +7,7 @@ import(
     "fmt"
 
     "github.com/dgrijalva/jwt-go"
-	orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/Databases"
+	orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/DataBases/mysql"
 )
 
 type User struct{
@@ -81,6 +81,16 @@ func JwtParserUser(tokenString string) (*User, error){
 	return claims.User, nil
 }
 
+
+//User is exist?
+func IsExistUser(username string)(bool, error) {
+	res := orm.Db.Where("username = ?",username).First(&User{})
+	err := res.Error
+	if err != nil && err != orm.ErrorRecordNotFound {
+		return true, nil
+	}
+	return false, err
+}
 
 
 func CreatUser(username, password, email string) (string, error) {

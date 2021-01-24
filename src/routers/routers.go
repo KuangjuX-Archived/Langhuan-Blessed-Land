@@ -28,12 +28,6 @@ func InnitRouter() *gin.Engine{
         root.POST("register", Register)
         root.POST("loginByUsername", LoginByUsername)
         root.POST("loginByEmail", LoginByEmail)
-
-        //websocket test
-        // hub := WebSocketService.NewHub()
-        // go hub.Run()
-        // root.GET("chat", func(c *gin.Context) { WebSocketService.ServeWs(hub, c) })
-
        
         
         articles := root.Group("/articles")
@@ -67,10 +61,6 @@ func InnitRouter() *gin.Engine{
         }
     }
 
-    //websocket test
-    // hub := WebSocketService.NewHub()
-    // go hub.Run()
-    // routers.GET("ws", func(c *gin.Context) { WebSocketService.ServeWs(hub, c) })
 
     return routers;
 }
