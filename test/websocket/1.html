@@ -27,7 +27,8 @@ window.onload = function () {
     };
     if (window["WebSocket"]) {
         var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDMwMzU4NDUsImp0aSI6IjMiLCJpYXQiOjE2MTE0OTk4NDUsImlzcyI6ImdpdGh1Yi5jb20vS3VhbmdqdVgvTGFuZy1IdWFuLUJsZXNzZWQtTGFuZCIsImlkIjozLCJ1c2VybmFtZSI6InhpamlucGluZyIsIm5pY2tuYW1lIjoiIiwicGFzc3dvcmQiOiIiLCJlbWFpbCI6IjEyM0AxMjMuY29tIiwiYXZhdGFyIjoiIiwiY3JlYXRlZF9hdCI6IjIwMjEtMDEtMjRUMjI6NDg6NTArMDg6MDAiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wMS0yNFQyMjo0ODo1MCswODowMCJ9.5wGU61g3UxBIGuDG53N98uPecs22RbXuobXi8BmyHa8"
-        test_url = `ws://127.0.0.1:8081/api/user/chat/?room_id=1&token=${token}`
+        var room_id = "xijinping&jiangzhemin"
+        test_url = `ws://127.0.0.1:8081/api/user/chat/?room_id=${room_id}&token=${token}`
         conn = new WebSocket(test_url);
         conn.onclose = function (evt) {
             var item = document.createElement("div");

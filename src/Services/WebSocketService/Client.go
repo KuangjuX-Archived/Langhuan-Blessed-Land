@@ -14,6 +14,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/DataBases/redis"
 )
 
 
@@ -62,7 +63,7 @@ type Client struct {
 // The application runs readPump in a per-connection goroutine. The application
 // ensures that there is at most one reader on a connection by executing all
 // reads from this goroutine.
-func (c *Client) readPump() {
+func (c *Client) readPump(conn *redis.RedisConn) {
 	defer func() {
 		c.hub.unregister <- c
 		c.conn.Close()
@@ -79,7 +80,14 @@ func (c *Client) readPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		message = []byte(string(c.roomID) + "&" + string(c.username) + ":" + string(message))
+		message = []byte(string(c.roomID) + "&" + string(c.username) + ": " + string(message))
+
+		key := c.roomID
+		_, err = (*conn).Do("LPUSH", key, message)
+		if err != nil{
+			fmt.Printf("error: %s", err)
+		}
+
 		fmt.Println(string(message))
 		c.hub.broadcast <- []byte(message)
 	}
@@ -170,10 +178,14 @@ func ServeWs(hub *Hub, c *gin.Context) {
 	// userName := req.UserName
 	// roomID := req.RoomID
 
-	// 获取redis连接(暂未使用)
-	// pool := c.MustGet("test").(*redis.Pool)
-	// redisConn := pool.Get()
-	// defer redisConn.Close()
+	// 获取redis连接
+	pool := redis.RedisPool
+	redisConn := pool.Get()
+	defer redisConn.Close()
+	
+
+	
+
 	// 将网络请求变为websocket
 	var upgrader = websocket.Upgrader{
 		// 解决跨域问题
@@ -193,5 +205,5 @@ func ServeWs(hub *Hub, c *gin.Context) {
 	// Allow collection of memory referenced by the caller by doing all work in
 	// new goroutines.
 	go client.writePump()
-	go client.readPump()
+	go client.readPump(&redisConn)
 }

@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-var redisPool *redis.Pool
-var Conn redis.Conn
+var RedisPool *redis.Pool
+type RedisConn = redis.Conn
 
 func init() {
 	viper.SetConfigName("config")
@@ -25,16 +25,17 @@ func init() {
 	password := viper.GetString(`redis.password`)
 	db := viper.GetInt(`redis.database`)
 
-	redisPool = newPool(server, password, db)
-	Conn = redisPool.Get()
+	RedisPool = newPool(server, password, db)
+	
 
 }
 
 // newPool New redis pool.
 func newPool(server, password string, db int) *redis.Pool {
 	return &redis.Pool{
-		MaxIdle:     3,
-		IdleTimeout: 240 * time.Second,
+		MaxIdle: 256,
+		MaxActive: 0,
+		IdleTimeout: time.Duration(120),
 		Dial: func() (redis.Conn, error) {
 			c, err := redis.Dial("tcp", server,
 				redis.DialPassword(password),
@@ -43,6 +44,7 @@ func newPool(server, password string, db int) *redis.Pool {
 				redis.DialReadTimeout(500*time.Millisecond),
 				redis.DialWriteTimeout(500*time.Millisecond))
 			if err != nil {
+				fmt.Printf("error: %s", err)
 				return nil, err
 			}
 
