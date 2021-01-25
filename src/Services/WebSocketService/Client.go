@@ -63,10 +63,11 @@ type Client struct {
 // The application runs readPump in a per-connection goroutine. The application
 // ensures that there is at most one reader on a connection by executing all
 // reads from this goroutine.
-func (c *Client) readPump(conn *redis.RedisConn) {
+func (c *Client) readPump(conn redis.RedisConn) {
 	defer func() {
 		c.hub.unregister <- c
 		c.conn.Close()
+		conn.Close()
 	}()
 	c.conn.SetReadLimit(maxMessageSize)
 	c.conn.SetReadDeadline(time.Now().Add(pongWait))
@@ -83,14 +84,15 @@ func (c *Client) readPump(conn *redis.RedisConn) {
 		message = []byte(string(c.roomID) + "&" + string(c.username) + ": " + string(message))
 
 		key := c.roomID
-		_, err = (*conn).Do("LPUSH", key, message)
+		_, err = conn.Do("LPUSH", key, message)
 		if err != nil{
-			fmt.Printf("error: %s", err)
+			fmt.Printf("error: %s\n", err)
 		}
 
 		fmt.Println(string(message))
 		c.hub.broadcast <- []byte(message)
 	}
+
 }
 
 // writePump pumps messages from the hub to the websocket connection.
@@ -143,26 +145,14 @@ func (c *Client) writePump() {
 			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
 				return
 			}
+		
 		}
 	}
+	
 }
-
-// ChatRequest 聊天室请求
-// type ChatRequest struct {
-// 	RoomID   string `json:"room_id" form:"room_id"`
-// 	UserID   int    `json:"user_id" form:"user_id"`
-// 	UserName string `json:"user_name" form:"user_name"`
-// }
 
 // ServeWs handles websocket requests from the peer.
 func ServeWs(hub *Hub, c *gin.Context) {
-	// 获取前端数据
-	// var req ChatRequest
-	// if err := c.ShouldBind(&req); err != nil {
-	// 	log.Printf("ServeWs err:%v\n", err)
-	// 	c.JSON(http.StatusOK, gin.H{"errno": "-1", "errmsg": "参数不匹配，请重试"})
-	// 	return
-	// }
 
 
 	res, err := Help.GetUserByToken(c)
@@ -175,20 +165,18 @@ func ServeWs(hub *Hub, c *gin.Context) {
 	userName := userInfo.Username
 	roomID := c.Query("room_id")
 
-	// userName := req.UserName
-	// roomID := req.RoomID
 
-	// 获取redis连接
+	// Get Redis Connection
 	pool := redis.RedisPool
 	redisConn := pool.Get()
-	defer redisConn.Close()
+	// defer redisConn.Close()
 	
 
 	
 
-	// 将网络请求变为websocket
+	// Change Http to WebSocket
 	var upgrader = websocket.Upgrader{
-		// 解决跨域问题
+		// Solve Cors
 		CheckOrigin: func(r *http.Request) bool {
 			return true
 		},
@@ -205,5 +193,5 @@ func ServeWs(hub *Hub, c *gin.Context) {
 	// Allow collection of memory referenced by the caller by doing all work in
 	// new goroutines.
 	go client.writePump()
-	go client.readPump(&redisConn)
+	go client.readPump(redisConn)
 }
