@@ -137,7 +137,7 @@ func (c *Client) writePump() {
 			// 	}
 			// }
 			if err := w.Close(); err != nil {
-				log.Printf("error: %v", err)
+				log.Printf("error: %v\n", err)
 				return
 			}
 		case <-ticker.C:
@@ -186,7 +186,7 @@ func ServeWs(hub *Hub, c *gin.Context) {
 		log.Println(err)
 		return
 	}
-	fmt.Println(userName)
+	fmt.Printf("user: %s\n", userName)
 	client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256), username: []byte(userName), roomID: []byte(roomID)}
 	client.hub.register <- client
 

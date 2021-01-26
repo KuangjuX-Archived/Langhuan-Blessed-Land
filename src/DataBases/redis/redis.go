@@ -44,7 +44,7 @@ func newPool(server, password string, db int) *redis.Pool {
 				redis.DialReadTimeout(500*time.Millisecond),
 				redis.DialWriteTimeout(500*time.Millisecond))
 			if err != nil {
-				fmt.Printf("error: %s", err)
+				fmt.Printf("error: %s\n", err)
 				return nil, err
 			}
 
