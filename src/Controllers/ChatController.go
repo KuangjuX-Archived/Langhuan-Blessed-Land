@@ -13,8 +13,13 @@ func GetChatInfo(c *gin.Context)  {
 		Help.JsonError(c, err)
 		return
 	}
+	
+	var end int64 = len - 1
+	if len > 500 {
+		end = 500
+	}
 
-	res, err := redis.GetInfoFromList(room_id, 0, len-1)
+	res, err := redis.GetInfoFromList(room_id, 0, end)
 	if err != nil{
 		Help.JsonError(c, err)
 		return
