@@ -76,20 +76,22 @@ func (c *Client) readPump(conn redis.RedisConn) {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				log.Printf("error: %v", err)
+				log.Printf("error: %v\n", err)
 			}
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		message = []byte(string(c.roomID) + "&" + string(c.username) + ": " + string(message))
-
+		message = []byte(string(c.username) + ": " + string(message))
+		
+		//write to redis
 		key := c.roomID
 		_, err = conn.Do("LPUSH", key, message)
 		if err != nil{
 			fmt.Printf("error: %s\n", err)
 		}
 
-		fmt.Println(string(message))
+		// build special string to broadcast
+		message = []byte(string(c.roomID) + "&?!*" + string(message))		
 		c.hub.broadcast <- []byte(message)
 	}
 

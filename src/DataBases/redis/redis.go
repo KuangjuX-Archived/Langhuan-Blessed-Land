@@ -11,6 +11,7 @@ import (
 var RedisPool *redis.Pool
 type RedisConn = redis.Conn
 
+
 func init() {
 	viper.SetConfigName("config")
     viper.AddConfigPath("config")
@@ -59,4 +60,13 @@ func newPool(server, password string, db int) *redis.Pool {
 			return err
 		},
 	}
+}
+
+func Strings(reply interface{})([]string, error){
+	var err error
+	res, err := redis.Strings(reply, err)
+	if err != nil{
+		return nil, err
+	}
+	return res, nil
 }

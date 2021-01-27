@@ -7,6 +7,10 @@ window.onload = function () {
     var conn;
     var msg = document.getElementById("msg");
     var log = document.getElementById("log");
+    
+
+    
+
     function appendLog(item) {
         var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
         log.appendChild(item);
@@ -26,9 +30,9 @@ window.onload = function () {
         return false;
     };
     if (window["WebSocket"]) {
-        var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDMwMzU4NDUsImp0aSI6IjMiLCJpYXQiOjE2MTE0OTk4NDUsImlzcyI6ImdpdGh1Yi5jb20vS3VhbmdqdVgvTGFuZy1IdWFuLUJsZXNzZWQtTGFuZCIsImlkIjozLCJ1c2VybmFtZSI6InhpamlucGluZyIsIm5pY2tuYW1lIjoiIiwicGFzc3dvcmQiOiIiLCJlbWFpbCI6IjEyM0AxMjMuY29tIiwiYXZhdGFyIjoiIiwiY3JlYXRlZF9hdCI6IjIwMjEtMDEtMjRUMjI6NDg6NTArMDg6MDAiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wMS0yNFQyMjo0ODo1MCswODowMCJ9.5wGU61g3UxBIGuDG53N98uPecs22RbXuobXi8BmyHa8"
-        var room_id = "xijinpingjiangzhemin"
-        test_url = `ws://127.0.0.1:8081/api/user/chat/?room_id=${room_id}&token=${token}`
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDMyOTE3OTYsImp0aSI6IjMiLCJpYXQiOjE2MTE3NTU3OTYsImlzcyI6ImdpdGh1Yi5jb20vS3VhbmdqdVgvTGFuZy1IdWFuLUJsZXNzZWQtTGFuZCIsImlkIjozLCJ1c2VybmFtZSI6InhpamlucGluZyIsIm5pY2tuYW1lIjoiIiwicGFzc3dvcmQiOiIiLCJlbWFpbCI6IjEyM0AxMjMuY29tIiwiYXZhdGFyIjoiIiwiY3JlYXRlZF9hdCI6IjIwMjEtMDEtMjRUMjI6NDg6NTArMDg6MDAiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wMS0yNFQyMjo0ODo1MCswODowMCJ9.veOYCnWyeDVHvztsT6iziYP5syUJUYiPWsmd0xqsits"
+        let room_id = "xijinpingjiangzhemin"
+        test_url = `ws://127.0.0.1:8081/api/user/chat/ws?room_id=${room_id}&token=${token}`
         conn = new WebSocket(test_url);
         conn.onclose = function (evt) {
             var item = document.createElement("div");
@@ -54,6 +58,30 @@ window.onload = function () {
         item.innerHTML = "<b>Your browser does not support WebSockets.</b>";
         appendLog(item);
     }
+
+    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDMyODYxNDIsImp0aSI6IjQiLCJpYXQiOjE2MTE3NTAxNDIsImlzcyI6ImdpdGh1Yi5jb20vS3VhbmdqdVgvTGFuZy1IdWFuLUJsZXNzZWQtTGFuZCIsImlkIjo0LCJ1c2VybmFtZSI6ImppYW5nemhlbWluIiwibmlja25hbWUiOiIiLCJwYXNzd29yZCI6IiIsImVtYWlsIjoiMTIzQDEyMy5jb20iLCJhdmF0YXIiOiIiLCJjcmVhdGVkX2F0IjoiMjAyMS0wMS0yNFQyMjo0OTowNCswODowMCIsInVwZGF0ZWRfYXQiOiIyMDIxLTAxLTI0VDIyOjQ5OjA0KzA4OjAwIn0.avHdm-rEZ6P-K9LhKeBfsvfr_LRL5XlSHF4a-egYpFw"
+    let room_id = "xijinpingjiangzhemin"
+    let url = `http://127.0.0.1:8081/api/user/chat/getChatInfo?room_id=${room_id}`
+    console.log(1);
+
+    let getChat = async() => {
+            let response = await fetch(url, {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })
+            if(response.ok){
+                let content = await response.text()
+                console.log(content)
+                return content
+            }else{
+                alert("Error: " + response.status)
+            }
+    }
+
+    getChat().then(contenes => {
+        console.log(contents)
+    })
 };
 </script>
 <style type="text/css">

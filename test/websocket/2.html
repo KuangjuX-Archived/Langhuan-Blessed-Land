@@ -26,9 +26,9 @@ window.onload = function () {
         return false;
     };
     if (window["WebSocket"]) {
-        var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDMwMzU5OTAsImp0aSI6IjQiLCJpYXQiOjE2MTE0OTk5OTAsImlzcyI6ImdpdGh1Yi5jb20vS3VhbmdqdVgvTGFuZy1IdWFuLUJsZXNzZWQtTGFuZCIsImlkIjo0LCJ1c2VybmFtZSI6ImppYW5nemhlbWluIiwibmlja25hbWUiOiIiLCJwYXNzd29yZCI6IiIsImVtYWlsIjoiMTIzQDEyMy5jb20iLCJhdmF0YXIiOiIiLCJjcmVhdGVkX2F0IjoiMjAyMS0wMS0yNFQyMjo0OTowNCswODowMCIsInVwZGF0ZWRfYXQiOiIyMDIxLTAxLTI0VDIyOjQ5OjA0KzA4OjAwIn0.8myPaeDULE38gOgGuUGaDdcqbtjUWqwpEi7tJP6Cqc8"
+        var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDMyOTE3NjcsImp0aSI6IjQiLCJpYXQiOjE2MTE3NTU3NjcsImlzcyI6ImdpdGh1Yi5jb20vS3VhbmdqdVgvTGFuZy1IdWFuLUJsZXNzZWQtTGFuZCIsImlkIjo0LCJ1c2VybmFtZSI6ImppYW5nemhlbWluIiwibmlja25hbWUiOiIiLCJwYXNzd29yZCI6IiIsImVtYWlsIjoiMTIzQDEyMy5jb20iLCJhdmF0YXIiOiIiLCJjcmVhdGVkX2F0IjoiMjAyMS0wMS0yNFQyMjo0OTowNCswODowMCIsInVwZGF0ZWRfYXQiOiIyMDIxLTAxLTI0VDIyOjQ5OjA0KzA4OjAwIn0.hTskH-SMxhw1RHt0zk8dd8M2dAnJupDN0m3-LWOBSMs"
         var room_id = "xijinpingjiangzhemin"
-        test_url = `ws://127.0.0.1:8081/api/user/chat/?room_id=${room_id}&token=${token}`
+        test_url = `ws://127.0.0.1:8081/api/user/chat/ws?room_id=${room_id}&token=${token}`
         conn = new WebSocket(test_url);
         conn.onclose = function (evt) {
             var item = document.createElement("div");
@@ -36,10 +36,12 @@ window.onload = function () {
             appendLog(item);
         };
         conn.onerror = function(evt) {
+            console.log("456")
             var item = document.createElement("div")
             console.error("WebSocket error observed:", event)
         }
         conn.onmessage = function (evt) {
+            console.log("123")
             var messages = evt.data.split('\n');
             for (var i = 0; i < messages.length; i++) {
                 var item = document.createElement("div");
