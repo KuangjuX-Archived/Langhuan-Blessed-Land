@@ -10,6 +10,6 @@ ENV GOOS=linux
 
 COPY . .
 
-EXPOSE 80
+EXPOSE 8081
 
-CMD["/bin/sh", "/app/script/build.sh"]
+CMD ["/bin/sh", "/app/script/build.sh"]
