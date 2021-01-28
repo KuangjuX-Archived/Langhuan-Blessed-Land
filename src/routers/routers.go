@@ -56,7 +56,7 @@ func InnitRouter() *gin.Engine{
             {
                 hub := WebSocketService.NewHub()
                 go hub.Run()
-                userchat.GET("/ws", func(c *gin.Context){WebSocketService.ServeWs(hub, c)})
+                userchat.GET("/ws", Chat)
                 userchat.GET("/getChatInfo", GetChatInfo)
             }
         }

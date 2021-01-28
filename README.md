@@ -19,7 +19,7 @@ This project is named "Lang Huan Blessed Land" because "Lang Huan Blessed Land" 
 
 ## Architecture
 
-![](docs/static files/Architecture.png)
+![](/docs/static-files/Architecture.png)
 
 ## Usage
 

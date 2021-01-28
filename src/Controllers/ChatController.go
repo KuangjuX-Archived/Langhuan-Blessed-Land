@@ -1,10 +1,17 @@
 package Controllers
 
 import(
-	redis "github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/RedisService"
 	"github.com/gin-gonic/gin"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/json"
+	redis "github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/RedisService"
+	ws "github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/WebSocketService"
 )
+
+func Chat(c *gin.Context){
+	hub := ws.NewHub()
+	go hub.Run()
+	ws.ServeWs(hub, c)
+}
 
 func GetChatInfo(c *gin.Context)  {
 	room_id := c.Query("room_id")
