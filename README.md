@@ -2,6 +2,8 @@
 
 ## Introduction
 
+**Mysql&&Redis&&WebSocket&&Docker**
+
 Lang Huan Blessed Land(琅嬛福地) is a place in the chivalrous story  "The semi Gods and semi Devils"(天龙八部) written by Jin Yong which is located in a deep valley stone cave in the Wuliang Mountain of Dali Kingdom.  The head of the XiaoYao Pai(逍遥派) Wu Yazi(无崖子) and his junior sister QiuShui Li(李秋水) gave birth to QingLuo Li(李青萝) and lived together after then. In this place, there are hidden martial arts secrets from all walks of life in the world.
 
 金庸名著《天龙八部》中的地名，位於大理国无量山中一深谷石洞中，「逍遥派」掌门人无崖子与师妹李秋水两人生了李青萝（即王夫人）爱女後，共居此地中，在山洞内藏有普天下各路的武林秘笈。
@@ -14,7 +16,7 @@ This project is named "Lang Huan Blessed Land" because "Lang Huan Blessed Land" 
 
 - Go  >=1.14
 - Mysql
-- redis
+- Redis
 - Docker
 
 ## Architecture
@@ -32,44 +34,8 @@ docker run -p 8081:8081 -d Langhuan-Blessed-Land
 
 You can visit `http://baseurl:8081` to use the app.
 
+In addition, you can also use `nginx.conf` to carry out Proxy forwarding.
+
 ## Api
 
-### Register
-
-**Method**: `POST`
-
-**Content-Type**: `multipart/form-data`
-
-**URL**: `/api/register`
-
-**Params**:
-
-| param    | Required | Type   | Description |
-| :------- | :------- | :----- | ----------- |
-| username | Y        | string | username    |
-| email    | Y        | string | email       |
-| password | Y        | string | password    |
-
-**Response:**
-
-success:
-
-```json
-{
-    "error_code": 0,
-    "message": "创建成功"
-}
-```
-
-fail:
-
-```json
-{
-    "error": "Expected arguments.",
-    "error_code": 1,
-    "message": "Fail to register."
-}
-```
-
-
-
+**Please see docs/api.**
