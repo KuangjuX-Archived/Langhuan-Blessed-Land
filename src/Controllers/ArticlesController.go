@@ -4,17 +4,17 @@ import(
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/json"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
 )
 
 func GetAllArticles(c *gin.Context){
 	articles, err := Models.GetAllArticles()
 	if err != nil {
-		Help.JsonError(c, err)
+		json.JsonError(c, err)
 	}
 
-	Help.JsonDataWithSuccess(c, articles)
+	json.JsonDataWithSuccess(c, articles)
 }
 
 func GetArticlesByTag(c *gin.Context){
@@ -22,10 +22,10 @@ func GetArticlesByTag(c *gin.Context){
 	data, err := Models.GetArticlesByTag(tag_id)
 
 	if err != nil {
-		Help.JsonError(c, err)
+		json.JsonError(c, err)
 	}
 
-	Help.JsonDataWithSuccess(c, data)
+	json.JsonDataWithSuccess(c, data)
 }
 
 func GetAllArticlesByPage(c *gin.Context){
@@ -44,10 +44,10 @@ func GetAllArticlesByPage(c *gin.Context){
 	data, err := Models.GetArticlesByPage(page, size, params)
 
 	if err != nil {
-		Help.JsonError(c, err)
+		json.JsonError(c, err)
 	}
 
-	Help.JsonDataWithSuccess(c, data)
+	json.JsonDataWithSuccess(c, data)
 
 }
 
@@ -59,9 +59,9 @@ func SearchArticles(c *gin.Context){
 
 	data, err := Models.SearchArticles(search_text, page, size)
 	if err != nil{
-		Help.JsonMsgWithError(c, "Fail to search content", err)
+		json.JsonMsgWithError(c, "Fail to search content", err)
 		return
 	}
 
-	Help.JsonDataWithSuccess(c, data)
+	json.JsonDataWithSuccess(c, data)
 }

@@ -5,7 +5,7 @@ import(
 	"errors"
 
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
-	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/json"
 	"github.com/gin-gonic/gin"
 
 )
@@ -18,7 +18,7 @@ func authentication(c *gin.Context){
 	if !ok {
 		hToken := c.GetHeader("Authorization")
 		if len(hToken) < bearerLength {
-			Help.JsonError(c, errors.New("header Authorization has not Bearer token"))
+			json.JsonError(c, errors.New("header Authorization has not Bearer token"))
 			return 
 		}
 		token = strings.TrimSpace(hToken[bearerLength:])
@@ -26,7 +26,7 @@ func authentication(c *gin.Context){
 
 	user, err := Models.JwtParserUser(token)
 	if err != nil {
-		Help.JsonError(c, err)
+		json.JsonError(c, err)
 		return
 	}
 

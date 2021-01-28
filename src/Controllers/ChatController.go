@@ -3,14 +3,14 @@ package Controllers
 import(
 	redis "github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/RedisService"
 	"github.com/gin-gonic/gin"
-	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/json"
 )
 
 func GetChatInfo(c *gin.Context)  {
 	room_id := c.Query("room_id")
 	len, err := redis.GetListLen(room_id)
 	if err != nil{
-		Help.JsonError(c, err)
+		json.JsonError(c, err)
 		return
 	}
 	
@@ -21,10 +21,10 @@ func GetChatInfo(c *gin.Context)  {
 
 	res, err := redis.GetInfoFromList(room_id, 0, end)
 	if err != nil{
-		Help.JsonError(c, err)
+		json.JsonError(c, err)
 		return
 	}
 
-	Help.JsonDataWithSuccess(c, res)
+	json.JsonDataWithSuccess(c, res)
 
 }

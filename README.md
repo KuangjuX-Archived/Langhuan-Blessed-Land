@@ -12,11 +12,14 @@ This project is named "Lang Huan Blessed Land" because "Lang Huan Blessed Land" 
 
 ## Config
 
-- go  1.14
-- gin  v1.6.3
-- gorm  v1.9.16
-- jwt-go v3.2.0+incompatible
-- viper v1.7.1
+- Go  >=1.14
+- Mysql
+- redis
+- Docker
+
+## Architecture
+
+![](docs/static files/Architecture.png)
 
 ## Usage
 

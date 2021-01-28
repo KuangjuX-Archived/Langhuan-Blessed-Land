@@ -12,7 +12,8 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/gorilla/websocket"
-	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/json"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/auth"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/DataBases/redis"
 )
@@ -157,9 +158,9 @@ func (c *Client) writePump() {
 func ServeWs(hub *Hub, c *gin.Context) {
 
 
-	res, err := Help.GetUserByToken(c)
+	res, err := auth.GetUserByToken(c)
 	if err != nil{
-		Help.JsonError(c, err)
+		json.JsonError(c, err)
 		return
 	}
 	userInfo, _ := res.(Models.User)

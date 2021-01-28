@@ -5,7 +5,7 @@ import(
 
 	"github.com/gin-gonic/gin"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/HttpService"
-	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/json"
 )
 
 func GetCommentsByArticle(c *gin.Context){
@@ -13,9 +13,9 @@ func GetCommentsByArticle(c *gin.Context){
 	
 	data, err := HttpService.BFSComments(article_id)
 	if err != nil{
-		Help.JsonError(c, err)
+		json.JsonError(c, err)
 		return
 	}
 
-	Help.JsonDataWithSuccess(c, data)
+	json.JsonDataWithSuccess(c, data)
 }
