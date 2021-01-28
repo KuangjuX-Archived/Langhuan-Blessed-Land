@@ -54,8 +54,6 @@ func InnitRouter() *gin.Engine{
             //websocket test
             userchat := user.Group("chat")
             {
-                hub := WebSocketService.NewHub()
-                go hub.Run()
                 userchat.GET("/ws", Chat)
                 userchat.GET("/getChatInfo", GetChatInfo)
             }
