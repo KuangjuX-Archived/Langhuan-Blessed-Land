@@ -25,12 +25,12 @@ This project is named "Lang Huan Blessed Land" because "Lang Huan Blessed Land" 
 
 ```
 git clone git@github.com:KuangjuX/Langhuan-Blessed-Land.git
-cd src
-go mod download
-go build -o main
+cd Langhuan-Blessed-Land
+docker build -t Langhuan-Blessed-Land .
+docker run -p 8081:8081 -d Langhuan-Blessed-Land
 ```
 
-In Windows, you can run by `.\main.exe`, and in Linux , you can run by `.\main`
+You can visit `http://baseurl:8081` to use the app.
 
 ## Api
 
