@@ -27,10 +27,10 @@ This project is named "Lang Huan Blessed Land" because "Lang Huan Blessed Land" 
 git clone git@github.com:KuangjuX/Langhuan-Blessed-Land.git
 cd src
 go mod download
-go build
+go build -o main
 ```
 
-In Windows, you can run by `.\Lang-Huan-Blessed-Land.exe`, and in Linux , you can run by `.\Lang-Huan-Blessed-Land`
+In Windows, you can run by `.\main.exe`, and in Linux , you can run by `.\main`
 
 ## Api
 
