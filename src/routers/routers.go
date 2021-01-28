@@ -7,7 +7,6 @@ import(
     "github.com/gin-contrib/cors"
     ."github.com/KuangjuX/Lang-Huan-Blessed-Land/Controllers"
     "github.com/KuangjuX/Lang-Huan-Blessed-Land/Middleware"
-    "github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/WebSocketService"
 )
 
 func InnitRouter() *gin.Engine{
