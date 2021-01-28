@@ -1,5 +1,9 @@
+# exectuable files
 *.exe
 
-
+# editor
 .vscode
 .idea
+
+# project dependency
+vendor/*

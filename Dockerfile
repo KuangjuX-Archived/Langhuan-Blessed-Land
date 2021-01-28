@@ -1,4 +1,15 @@
+# build stage
 FROM golang:latest
-WORKDIR src/
+WORKDIR /app
 
-RUN go build
+# speed up
+ENV GO111MODULE=on
+ENV GOPROXY="https://goproxy.io"
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+
+COPY . .
+
+EXPOSE 80
+
+CMD["/bin/sh", "/app/script/build.sh"]
