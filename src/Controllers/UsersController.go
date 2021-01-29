@@ -9,6 +9,7 @@ import (
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/json"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/auth"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/HttpService"
 )
 
 func Register(c *gin.Context)  {
@@ -66,6 +67,30 @@ func LoginByEmail(c *gin.Context)  {
 	}else{
 		json.JsonError(c, err)
 	}
+}
+
+func OAuthGithub(c *gin.Context){
+	if err := HttpService.RequestGithubAuth(); err != nil{
+		json.JsonError(c, err)
+		return
+	}
+	json.JsonSuccess(c)
+
+}
+
+func OAuthGithubRedirect(c *gin.Context){
+	code, ok := c.GetQuery("code")
+	if !ok{
+		json.JsonError(c, errors.New("Fail to get code."))
+		return
+	}
+	response, err := HttpService.RequestGithubToken(code)
+	if err != nil{
+		json.JsonError(c, err)
+		return
+	}
+	json.JsonDataWithSuccess(c, response)
+
 }
 
 func GetUserArticles(c *gin.Context){

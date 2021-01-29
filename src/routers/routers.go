@@ -27,6 +27,12 @@ func InnitRouter() *gin.Engine{
         root.POST("register", Register)
         root.POST("loginByUsername", LoginByUsername)
         root.POST("loginByEmail", LoginByEmail)
+
+        oauth := root.Group("/OAuth")
+        {
+            oauth.GET("gitbub", OAuthGithub)
+            oauth.GET("github/redirect",)
+        }
        
         
         articles := root.Group("/articles")
