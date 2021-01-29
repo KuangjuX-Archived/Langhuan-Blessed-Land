@@ -27,26 +27,10 @@ func GetGithubSecret()(string, string ,error){
 }
 
 
-func RequestGithubAuth()(error){
-	client_id, _, _ := GetGithubSecret()
-	if len(client_id) == 0{
-		return errors.New("Not Found Client ID")
-	}
-
-	redirect_url := "http://langhuan.kuangjux.top/api/OAuth/github/redirect"
-	url := "http://langhuan.kuangjux.top/api/OAuth/github?" + "client_id=" + client_id + "redirect_uri" + redirect_url
-	response, err := http.Get(url)
-	if err != nil{
-		return err
-	}
-	defer response.Body.Close()
-	return nil
-}
-
-func RequestGithubToken(code string)(string, error){
+func RequestGithubToken(code string)([]byte, error){
 	client_id, client_secret, _ := GetGithubSecret()
 	if len(client_id) == 0 || len(client_secret) == 0{
-		return "", errors.New("Not Found Client ID or Secret.")
+		return []byte(""), errors.New("Not Found Client ID or Secret.")
 	}
 
 	response, err := http.PostForm("https://github.com/login/oauth/access_token",
@@ -55,15 +39,38 @@ func RequestGithubToken(code string)(string, error){
 						"client_secret": {client_secret},
 						"code": {code},
 					})
+	response.Header.Set("accept", "application/json")				
 	if err != nil{
-		return "", err
+		return []byte(""), err
 	}
 
 
 	res, err := ioutil.ReadAll(response.Body)
 	if err != nil{
-		return "", err
+		return []byte(""), err
 	}
+	fmt.Printf("res: %s\n", res)
 	defer response.Body.Close()
-	return string(res), nil
+	return res, nil
+}
+
+func RequestGithubInfo(access_token string)([]byte, error){
+	response, err := http.NewRequest("GET", "https://api.github.com/user", nil)
+	auth := "token " + access_token
+	response.Header.Add("Authorization", auth)
+
+	if err != nil{
+		return nil, err
+	}
+
+	res, err := ioutil.ReadAll(response.Body)
+
+	if err != nil{
+		return nil, err
+	}
+
+	defer response.Body.Close()
+
+	return res, nil
+
 }

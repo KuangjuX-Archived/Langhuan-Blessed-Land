@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"time"
 	"net/http"
+	stdjson "encoding/json"
 
     "github.com/gin-gonic/gin"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
@@ -96,8 +97,23 @@ func OAuthGithubRedirect(c *gin.Context){
 		json.JsonError(c, err)
 		return
 	}
-	json.JsonDataWithSuccess(c, response)
+	var res map[string]string
+	stdjson.Unmarshal(response, &res)
 
+	access_token := res["access_token"]
+	json.JsonDataWithSuccess(c, res)
+	if len(access_token) == 0 {
+		json.JsonError(c, errors.New("Not Found access_token"))
+		return
+	}
+
+	user, err := HttpService.RequestGithubInfo(access_token)
+	if err != nil{
+		json.JsonError(c, err)
+		return
+	}
+
+	json.JsonDataWithSuccess(c, user)
 }
 
 func GetUserArticles(c *gin.Context){
