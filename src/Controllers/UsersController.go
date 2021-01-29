@@ -1,11 +1,11 @@
 package Controllers
 
 import (
+	"strings"
 	"errors"
 	"strconv"
 	"time"
 	"net/http"
-	stdjson "encoding/json"
 
     "github.com/gin-gonic/gin"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
@@ -97,11 +97,9 @@ func OAuthGithubRedirect(c *gin.Context){
 		json.JsonError(c, err)
 		return
 	}
-	var res map[string]string
-	stdjson.Unmarshal(response, &res)
+	
+	access_token := strings.Split(string(response), "&")[0]
 
-	access_token := res["access_token"]
-	json.JsonDataWithSuccess(c, res)
 	if len(access_token) == 0 {
 		json.JsonError(c, errors.New("Not Found access_token"))
 		return

@@ -1,6 +1,7 @@
 package HttpService
 
 import(
+	"strings"
 	"fmt"
 	"errors"
 	"net/http"
@@ -32,14 +33,17 @@ func RequestGithubToken(code string)([]byte, error){
 	if len(client_id) == 0 || len(client_secret) == 0{
 		return []byte(""), errors.New("Not Found Client ID or Secret.")
 	}
+	
+	uri := "https://github.com/login/oauth/access_token"
+	data := url.Values{
+				"client_id": {client_id},
+				"client_secret": {client_secret},
+				"code": {code},
+			}
 
-	response, err := http.PostForm("https://github.com/login/oauth/access_token",
-					url.Values{
-						"client_id": {client_id},
-						"client_secret": {client_secret},
-						"code": {code},
-					})
-	response.Header.Set("accept", "application/json")				
+	response, err := http.NewRequest("POST", uri, strings.NewReader(data.Encode()))
+	response.Header.Set("Accept", "application/json")
+	
 	if err != nil{
 		return []byte(""), err
 	}
@@ -62,6 +66,7 @@ func RequestGithubInfo(access_token string)([]byte, error){
 	if err != nil{
 		return nil, err
 	}
+
 
 	res, err := ioutil.ReadAll(response.Body)
 
