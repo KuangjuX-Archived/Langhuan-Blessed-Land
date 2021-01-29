@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strconv"
 	"time"
+	"net/http"
 
     "github.com/gin-gonic/gin"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
@@ -70,11 +71,17 @@ func LoginByEmail(c *gin.Context)  {
 }
 
 func OAuthGithub(c *gin.Context){
-	if err := HttpService.RequestGithubAuth(); err != nil{
-		json.JsonError(c, err)
+	client_id, _, _ := HttpService.GetGithubSecret()
+	if len(client_id) == 0{
+		json.JsonError(c, errors.New("Not Found Client ID"))
 		return
 	}
-	json.JsonSuccess(c)
+
+	redirect_url := "http://127.0.0.1:8081/api/OAuth/github/redirect"
+	url := "https://github.com/login/oauth/authorize?" + "client_id=" + client_id + "&redirect_uri=" + redirect_url
+	
+	c.Redirect(http.StatusMovedPermanently, url)
+	
 
 }
 

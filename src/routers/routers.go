@@ -30,8 +30,8 @@ func InnitRouter() *gin.Engine{
 
         oauth := root.Group("/OAuth")
         {
-            oauth.GET("gitbub", OAuthGithub)
-            oauth.GET("github/redirect",)
+            oauth.GET("github", OAuthGithub)
+            oauth.GET("github/redirect", OAuthGithubRedirect)
         }
        
         
