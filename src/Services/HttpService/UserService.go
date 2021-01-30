@@ -8,6 +8,7 @@ import(
 	"io/ioutil"
 
 	"github.com/spf13/viper"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/debug"
 )
 
 func GetGithubSecret()(string, string ,error){
@@ -52,21 +53,27 @@ func RequestGithubToken(code string)([]byte, error){
 	if err != nil{
 		return []byte(""), err
 	}
-	fmt.Printf("res: %s\n", res)
+	// fmt.Printf("res: %s\n", res)
 	defer response.Body.Close()
 	return res, nil
 }
 
 func RequestGithubInfo(access_token string)([]byte, error){
-	response, err := http.NewRequest("GET", "https://api.github.com/user", nil)
-	auth := "token " + access_token
+	// var response *http.Request
+	response, err := http.Get("https://api.github.com/user")
+	auth := "Bearer " + access_token
 	response.Header.Add("Authorization", auth)
+	response.Header.Add("Accept", "application/json")
+	
+	debug.StdOutDebug("response: %s", response)
+	debug.StdOutDebug("response header: %s", response.Header)
+	debug.StdOutDebug("response body: %s", response.Body)
 
 	if err != nil{
 		return nil, err
 	}
 
-
+	
 	res, err := ioutil.ReadAll(response.Body)
 
 	if err != nil{
