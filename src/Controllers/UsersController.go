@@ -11,6 +11,7 @@ import (
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/json"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/auth"
+	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/debug"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/HttpService"
 )
 
@@ -98,7 +99,10 @@ func OAuthGithubRedirect(c *gin.Context){
 		return
 	}
 	
-	access_token := strings.Split(string(response), "&")[0]
+	const prefix_len = len("access_token=")
+	access_token := strings.Split(string(response), "&")[0][prefix_len:]
+	debug.StdOutDebug("access_token: %s", access_token)
+	
 
 	if len(access_token) == 0 {
 		json.JsonError(c, errors.New("Not Found access_token"))

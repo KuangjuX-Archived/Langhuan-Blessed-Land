@@ -1,7 +1,6 @@
 package HttpService
 
 import(
-	"strings"
 	"fmt"
 	"errors"
 	"net/http"
@@ -41,7 +40,7 @@ func RequestGithubToken(code string)([]byte, error){
 				"code": {code},
 			}
 
-	response, err := http.NewRequest("POST", uri, strings.NewReader(data.Encode()))
+	response, err := http.PostForm(uri, data)
 	response.Header.Set("Accept", "application/json")
 	
 	if err != nil{
