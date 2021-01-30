@@ -5,13 +5,13 @@ import (
 	"errors"
 	"strconv"
 	"time"
+	jsonparse "encoding/json"
 	"net/http"
 
     "github.com/gin-gonic/gin"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/json"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/auth"
-	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/debug"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/HttpService"
 )
 
@@ -101,7 +101,6 @@ func OAuthGithubRedirect(c *gin.Context){
 	
 	const prefix_len = len("access_token=")
 	access_token := strings.Split(string(response), "&")[0][prefix_len:]
-	debug.StdOutDebug("access_token: %s", access_token)
 	
 
 	if len(access_token) == 0 {
@@ -109,13 +108,15 @@ func OAuthGithubRedirect(c *gin.Context){
 		return
 	}
 
-	user, err := HttpService.RequestGithubInfo(access_token)
+	data, err := HttpService.RequestGithubInfo(access_token)
 	if err != nil{
 		json.JsonError(c, err)
 		return
 	}
+	var res map[string]string
+	jsonparse.Unmarshal(data, &res)
 
-	json.JsonDataWithSuccess(c, user)
+	json.JsonDataWithSuccess(c, res)
 }
 
 func GetUserArticles(c *gin.Context){

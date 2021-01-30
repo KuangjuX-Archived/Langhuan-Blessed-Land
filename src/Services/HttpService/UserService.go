@@ -59,21 +59,27 @@ func RequestGithubToken(code string)([]byte, error){
 }
 
 func RequestGithubInfo(access_token string)([]byte, error){
-	// var response *http.Request
-	response, err := http.Get("https://api.github.com/user")
-	auth := "Bearer " + access_token
-	response.Header.Add("Authorization", auth)
-	response.Header.Add("Accept", "application/json")
-	
-	debug.StdOutDebug("response: %s", response)
-	debug.StdOutDebug("response header: %s", response.Header)
-	debug.StdOutDebug("response body: %s", response.Body)
+	// response, err := http.Get("https://api.github.com/user")
+	// auth := "token " + access_token
+	// response.Header.Add("Authorization", auth)
+	// response.Header.Add("Accept", "application/json")
+
+	auth := "token " + access_token
+	req, err := http.NewRequest("GET", "https://api.github.com/user", nil)
+	req.Header.Add("Authorization", auth)
+	req.Header.Add("Accept", "application/json")
+
+	client := &http.Client{}
+    response, err := client.Do(req)
+   
+
+
 
 	if err != nil{
 		return nil, err
 	}
 
-	
+	debug.StdOutDebug("response Header: %v", response.Header)
 	res, err := ioutil.ReadAll(response.Body)
 
 	if err != nil{
