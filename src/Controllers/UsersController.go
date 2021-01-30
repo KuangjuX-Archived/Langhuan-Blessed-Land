@@ -116,7 +116,17 @@ func OAuthGithubRedirect(c *gin.Context){
 	var res map[string]string
 	jsonparse.Unmarshal(data, &res)
 
-	json.JsonDataWithSuccess(c, res)
+	user_info := res["data"]
+	token, err := HttpService.LoginByGithubInfo(user_info)
+	
+	if err != nil{
+		json.JsonError(c, err)
+		return
+	}
+
+	var ret map[string]string
+	ret["token"] = token
+	json.JsonDataWithSuccess(c, ret)
 }
 
 func GetUserArticles(c *gin.Context){
