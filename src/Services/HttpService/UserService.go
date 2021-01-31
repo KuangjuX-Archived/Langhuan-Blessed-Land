@@ -111,6 +111,7 @@ func LoginByGithub(user_info map[string]string)(string, error){
 	if !is_email{
 		// User is not found
 		if !is_username{
+			fmt.Printf("123\n")
 			// No duplicate username
 			// Create User !
 			if err := user.CreateUser(); err != nil{
