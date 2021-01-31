@@ -36,6 +36,10 @@ func hash(password string) ([]byte, error) {
     return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }
 
+func Hash(password string) ([]byte, error) {
+	return hash(password)
+}
+
 
 /*jwt*/
 func jwtGenerateToken(m *User, d time.Duration) (string, error) {
@@ -83,14 +87,16 @@ func JwtParserUser(tokenString string) (*User, error){
 
 
 //User is exist?
-func IsExistUser(username string)(bool, error) {
-	res := orm.Db.Where("username = ?",username).First(&User{})
+func IsExistUser(identify string)(bool, error) {
+	res := orm.Db.Where("username = ? or email = ?",identify, identify).First(&User{})
 	err := res.Error
 	if err != nil && err != orm.ErrorRecordNotFound {
 		return true, nil
 	}
 	return false, err
 }
+
+
 
 
 func CreatUser(username, password, email string) (string, error) {
@@ -104,13 +110,23 @@ func CreatUser(username, password, email string) (string, error) {
         Email: email,
     }
     
-    result := orm.Db.Create(&user)
-    if result.Error == nil {
+    res := orm.Db.Create(&user)
+    if res.Error == nil {
         return "Success to create", nil
     }else {
-        return "Fail to create", result.Error
+        return "Fail to create", res.Error
     }
 
+}
+
+func (user *User) CreateUser() (error){
+	res := orm.Db.Create(user)
+
+	if res.Error == nil {
+        return nil
+    }else {
+        return res.Error
+    }
 }
 
 func (user *User) Login() (string, error) {
@@ -133,6 +149,7 @@ func (user *User) Login() (string, error) {
 	return data, err
 
 }
+
 
 func ModifyNickname(user_id int64, new_nickname string) (error){
 	DB := orm.Db

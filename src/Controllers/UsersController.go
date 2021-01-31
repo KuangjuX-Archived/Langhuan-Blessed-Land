@@ -116,8 +116,8 @@ func OAuthGithubRedirect(c *gin.Context){
 	var res map[string]string
 	jsonparse.Unmarshal(data, &res)
 
-	user_info := res["data"]
-	token, err := HttpService.LoginByGithubInfo(user_info)
+
+	token, err := HttpService.LoginByGithub(res)
 	
 	if err != nil{
 		json.JsonError(c, err)
