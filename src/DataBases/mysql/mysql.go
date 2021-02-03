@@ -1,12 +1,13 @@
 package mysql
 
 import (
-
     "fmt"
+
     _ "github.com/go-sql-driver/mysql"
     "github.com/jinzhu/gorm"
-    "github.com/spf13/viper"
+    . "github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/config"
 )
+
 
 
 var Db *gorm.DB
@@ -16,21 +17,11 @@ var ErrorRecordNotFound error
 func init()  {
     ErrorRecordNotFound = gorm.ErrRecordNotFound 
     var err error
-
-    // read mysql information from config file
-    viper.SetConfigName("config")
-    viper.AddConfigPath("config")
-    viper.SetConfigType("json")
-    err = viper.ReadInConfig()
-    if err != nil {
-        fmt.Printf("config file error: %s\n", err)
-    }
-
-    // concatenate string to build params of mysql connection
-    username := viper.GetString(`mysql.username`)
-    url := viper.GetString(`mysql.url`)
-    password := viper.GetString(`mysql.password`)
-    database := viper.GetString(`mysql.database`)
+    
+    username := MYSQL.Username
+    password := MYSQL.Password
+    url := MYSQL.URL
+    database := MYSQL.Database
     mysql_params := username + ":" + password + "@tcp" + "(" + url + ")/" + database + "?charset=utf8&parseTime=True&loc=Local"
 
     // connect mysql

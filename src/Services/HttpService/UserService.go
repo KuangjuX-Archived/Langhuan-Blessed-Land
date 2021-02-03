@@ -1,33 +1,23 @@
 package HttpService
 
 import(
-	"fmt"
 	"strconv"
 	"errors"
 	"net/http"
 	"net/url"
 	"io/ioutil"
 
-	"github.com/spf13/viper"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
+	. "github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/config"
 )
 
 var DuplicatedUsername error = errors.New("Username has existed. Please modify username.")
 var PasswordError error = errors.New("You have changed password. Please login by current password")
 
 func GetGithubSecret()(string, string ,error){
-	viper.SetConfigName("config")
-    viper.AddConfigPath("config")
-	viper.SetConfigType("json")
-	
-	err := viper.ReadInConfig()
-    if err != nil {
-		fmt.Printf("config file error: %s\n", err)
-		return "", "" ,err
-	}
-	
-	client_id := viper.GetString(`github-oauth.client_id`)
-	client_secret := viper.GetString(`github-oauth.client_secret`)
+	client_id := GITHUB.ClientID
+	client_secret := GITHUB.ClientSecret
+
 	return client_id, client_secret, nil
 }
 

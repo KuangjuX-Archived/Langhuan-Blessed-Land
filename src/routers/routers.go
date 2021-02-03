@@ -55,6 +55,8 @@ func InnitRouter() *gin.Engine{
             user.POST("deleteArticle", DeleteArticle)
             user.POST("modifyArticle", ModifyArticle)
             user.POST("likeArticle", LikeArticle)
+            user.POST("followUser/:follower_id", FollowUser)
+            user.GET("getfollowers", GetFollowers)
             
             //websocket test
             userchat := user.Group("chat")

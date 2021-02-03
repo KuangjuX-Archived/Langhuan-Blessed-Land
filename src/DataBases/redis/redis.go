@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/garyburd/redigo/redis"
-	"github.com/spf13/viper"
+	. "github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/config"
 )
 
 var RedisPool *redis.Pool
@@ -13,18 +13,10 @@ type RedisConn = redis.Conn
 
 
 func init() {
-	viper.SetConfigName("config")
-    viper.AddConfigPath("config")
-	viper.SetConfigType("json")
-	
-	err := viper.ReadInConfig()
-    if err != nil {
-        fmt.Printf("config file error: %s\n", err)
-	}
-	
-	server := viper.GetString(`redis.server`)
-	password := viper.GetString(`redis.password`)
-	db := viper.GetInt(`redis.database`)
+
+	server := REDIS.Server
+	password := REDIS.Password
+	db := REDIS.Database
 
 	RedisPool = newPool(server, password, db)
 	

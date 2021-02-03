@@ -254,3 +254,44 @@ func LikeArticle(c *gin.Context){
 	}
 	json.JsonSuccess(c)
 }
+
+func FollowUser(c *gin.Context){
+	follower_id, _ := strconv.Atoi(c.Param("follower_id"))
+	
+	data, err := auth.GetUserByToken(c)
+
+	if err != nil{
+		json.JsonError(c, err)
+	}
+
+	user := data.(Models.User)
+
+	err = user.Follow(follower_id)
+	if err != nil{
+		json.JsonError(c, err)
+	}
+
+	json.JsonSuccess(c)
+
+}
+
+
+func GetFollowers(c *gin.Context){
+	data, err := auth.GetUserByToken(c)
+
+	if err != nil{
+		json.JsonError(c, err)
+	}
+
+	user := data.(Models.User)
+	user_id := int(user.ID)
+
+	page, _ := strconv.Atoi(c.Query("page"))
+	size, _ := strconv.Atoi(c.Query("size"))
+
+	followers, err := Models.GetFollowersByPage(page, size, user_id)
+	if err != nil{
+		json.JsonError(c, err)
+	}
+	json.JsonDataWithSuccess(c, followers)
+}

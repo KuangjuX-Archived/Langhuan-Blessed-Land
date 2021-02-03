@@ -18,7 +18,7 @@ func authentication(c *gin.Context){
 	if !ok {
 		hToken := c.GetHeader("Authorization")
 		if len(hToken) < bearerLength {
-			json.JsonError(c, errors.New("header Authorization has not Bearer token"))
+			json.JsonErrorWithCode(c, 403, errors.New("header Authorization has not Bearer token"))
 			return 
 		}
 		token = strings.TrimSpace(hToken[bearerLength:])

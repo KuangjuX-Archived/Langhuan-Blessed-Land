@@ -42,4 +42,11 @@ func JsonMsgWithError(c *gin.Context, msg interface{}, err error){
 	})
 }
 
+func JsonErrorWithCode(c *gin.Context, code int, err error){
+	c.JSON(code, gin.H{
+		"error_code": 1,
+		"error": err.Error(),
+	})
+}
+
 

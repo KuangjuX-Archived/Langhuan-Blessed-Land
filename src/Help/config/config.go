@@ -24,30 +24,31 @@ type GithubOAuth struct{
 	ClientSecret string
 }
 
-var MysqlConfig Mysql
-var RedisConfig Redis
-var GithubOAuthConfig GithubOAuth
+var MYSQL Mysql
+var REDIS Redis
+var GITHUB GithubOAuth
 
 func init() {
 	// read mysql information from config file
     viper.SetConfigName("config")
-    viper.AddConfigPath("../config")
+    viper.AddConfigPath("config")
     viper.SetConfigType("json")
     err := viper.ReadInConfig()
     if err != nil {
         fmt.Printf("config file error: %s\n", err)
 	}
 	
-	MysqlConfig.URL = viper.GetString(`mysql.url`)
-	MysqlConfig.Username = viper.GetString(`mysql.username`)
-	MysqlConfig.Password = viper.GetString(`mysql.password`)
-	MysqlConfig.Database = viper.GetString(`mysql.database`)
+	// Get Config Information
+	MYSQL.URL = viper.GetString(`mysql.url`)
+	MYSQL.Username = viper.GetString(`mysql.username`)
+	MYSQL.Password = viper.GetString(`mysql.password`)
+	MYSQL.Database = viper.GetString(`mysql.database`)
 
-	RedisConfig.Server = viper.GetString(`redis.server`)
-	RedisConfig.Password = viper.GetString(`redis.password`)
-	RedisConfig.Database = viper.GetInt(`redis.database`)
+	REDIS.Server = viper.GetString(`redis.server`)
+	REDIS.Password = viper.GetString(`redis.password`)
+	REDIS.Database = viper.GetInt(`redis.database`)
 
-	GithubOAuthConfig.ClientID = viper.GetString(`github-oauth.client_id`)
-	GithubOAuthConfig.ClientSecret = viper.GetString(`github-oauth.client_secret`)
+	GITHUB.ClientID = viper.GetString(`github-oauth.client_id`)
+	GITHUB.ClientSecret = viper.GetString(`github-oauth.client_secret`)
 
 }
