@@ -111,7 +111,6 @@ func LoginByGithub(user_info map[string]string)(string, error){
 	if !is_email{
 		// User is not found
 		if !is_username{
-			fmt.Printf("123\n")
 			// No duplicate username
 			// Create User !
 			if err := user.CreateUser(); err != nil{
@@ -127,7 +126,29 @@ func LoginByGithub(user_info map[string]string)(string, error){
 			return token, nil
 		}else{
 			// Duplicate username
-			return "", DuplicatedUsername 
+			var default_username string
+			last_id, err := Models.GetLastUserInfoByKey("ID")
+			if err != nil{
+				return "", err
+			}
+
+			user_id, _ := strconv.Atoi(last_id)
+			default_username = "user" + string(user_id)
+			user.Username = default_username
+			
+			if err := user.CreateUser(); err != nil{
+				return "", err
+			}
+
+			token, err := user.Login()
+
+			if err != nil{
+				return "", err
+			}
+
+			return token, nil
+
+			
 		}
 	}else{
 		// User has existed

@@ -4,7 +4,8 @@ import(
     "errors"
     "golang.org/x/crypto/bcrypt"
     "time"
-    "fmt"
+	"fmt"
+	"reflect"
 
     "github.com/dgrijalva/jwt-go"
 	orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/DataBases/mysql"
@@ -177,4 +178,18 @@ func ModifyAvatar(user_id int64, new_avatar string) (error){
 		return err
 	}
 	return nil
+}
+
+// Get Last User by key
+func GetLastUserInfoByKey(key string)(string, error){
+	// get the last user in database
+	var user User
+	if res := orm.Db.Last(&user); res.Error != nil{
+		return "", res.Error
+	}
+
+	tmp := reflect.ValueOf(user)
+
+	ret := tmp.FieldByName(key).String()
+	return ret, nil
 }
