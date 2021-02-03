@@ -89,12 +89,12 @@ func JwtParserUser(tokenString string) (*User, error){
 
 //User is exist?
 func IsExistUser(identify string)(bool, error) {
-	res := orm.Db.Where("username = ? or email = ?",identify, identify).First(&User{})
+	res := orm.Db.Where("username = ? or email = ?", identify, identify).First(&User{})
 	err := res.Error
 	if err != nil && err != orm.ErrorRecordNotFound {
-		return true, nil
+		return false, nil
 	}
-	return false, err
+	return true, err
 }
 
 

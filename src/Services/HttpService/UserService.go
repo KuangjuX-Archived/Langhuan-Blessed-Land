@@ -98,6 +98,7 @@ func LoginByGithub(user_info map[string]string)(string, error){
 	// Veridfy username is exist?
 	is_username, _ := Models.IsExistUser(user_info["login"])
 
+	// Build User Struct
 	var user *Models.User
 	default_password, _ := Models.Hash(user_info["login"] + strconv.FormatInt(time.Now().Unix(), 10))
 	user = &Models.User{
@@ -148,8 +149,7 @@ func LoginByGithub(user_info map[string]string)(string, error){
 
 			return token, nil
 
-			
-		}
+			}
 	}else{
 		// User has existed
 		// Login By Default password
