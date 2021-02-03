@@ -125,6 +125,7 @@ func OAuthGithubRedirect(c *gin.Context){
 	}
 
 	var ret map[string]string
+	ret = make(map[string]string)
 	ret["token"] = token
 	json.JsonDataWithSuccess(c, ret)
 }

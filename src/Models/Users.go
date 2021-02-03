@@ -91,10 +91,14 @@ func JwtParserUser(tokenString string) (*User, error){
 func IsExistUser(identify string)(bool, error) {
 	res := orm.Db.Where("username = ? or email = ?", identify, identify).First(&User{})
 	err := res.Error
-	if err != nil && err != orm.ErrorRecordNotFound {
-		return false, nil
+	if err != nil && err != orm.ErrorRecordNotFound{
+		return false, err
 	}
-	return true, err
+	if err != orm.ErrorRecordNotFound{
+		// fmt.Printf("User has exist.\n")
+		return true, nil
+	}
+	return false, nil
 }
 
 
@@ -121,6 +125,13 @@ func CreatUser(username, password, email string) (string, error) {
 }
 
 func (user *User) CreateUser() (error){
+	hash_password, err := hash(user.Password)
+	if err != nil{
+		return err
+	}
+
+	user.Password = string(hash_password)
+
 	res := orm.Db.Create(user)
 
 	if res.Error == nil {
@@ -141,12 +152,11 @@ func (user *User) Login() (string, error) {
     if err != nil{
         return "", err
     }
-
     if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input_password)); err != nil {
 		return "", err
 	}
 	user.Password = ""
-	data, err := jwtGenerateToken(user, time.Hour*24*365)
+	data, err := jwtGenerateToken(user, ExpireTime)
 	return data, err
 
 }
