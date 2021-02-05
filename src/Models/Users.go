@@ -148,7 +148,7 @@ func (user *User) Login() (string, error) {
     }
     input_password := user.Password
 
-    err := orm.Db.Where("username = ? or email = ?",user.Username, user.Email).First(&user).Error
+    err := orm.Db.Where("username = ? or email = ?",user.Username, user.Email).First(user).Error
     if err != nil{
         return "", err
     }
@@ -156,9 +156,19 @@ func (user *User) Login() (string, error) {
 		return "", err
 	}
 	user.Password = ""
-	data, err := jwtGenerateToken(user, ExpireTime)
-	return data, err
+	token, err := jwtGenerateToken(user, ExpireTime)
+	return token, err
 
+}
+
+func (user *User)OAuthLogin() (string, error) {
+	if err := orm.Db.Where("username = ? or email = ?", user.Username, user.Email).First(user).Error; err != nil {
+		return "", err
+	} 
+
+	user.Password = ""
+	token, err := jwtGenerateToken(user, ExpireTime)
+	return token, err
 }
 
 

@@ -1,6 +1,7 @@
 package HttpService
 
 import(
+	"time"
 	"strconv"
 	"errors"
 	"net/http"
@@ -89,8 +90,8 @@ func LoginByGithub(user_info map[string]string)(string, error){
 
 	// Build User Struct
 	var user *Models.User
-	// timestamps := strconv.FormatInt(time.Now().Unix(), 10)
-	default_password := user_info["login"]
+	timestamps := strconv.FormatInt(time.Now().Unix(), 10)
+	default_password := user_info["login"] + string(timestamps)
 	user = &Models.User{
 		Username: user_info["login"],
 		Nickname: user_info["name"],
@@ -110,7 +111,7 @@ func LoginByGithub(user_info map[string]string)(string, error){
 
 			//Modify Hashed password to default password to login
 			user.Password = default_password
-			token, err := user.Login()
+			token, err := user.OAuthLogin()
 
 			if err != nil{
 				return "", err
@@ -135,7 +136,7 @@ func LoginByGithub(user_info map[string]string)(string, error){
 
 			user.Password = default_password
 
-			token, err := user.Login()
+			token, err := user.OAuthLogin()
 
 			if err != nil{
 				return "", err
@@ -147,7 +148,7 @@ func LoginByGithub(user_info map[string]string)(string, error){
 	}else{
 		// User has existed
 		// Login By Default password
-		token, err := user.Login()
+		token, err := user.OAuthLogin()
 		if err != nil{
 			return "", err
 		}
