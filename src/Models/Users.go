@@ -141,6 +141,7 @@ func (user *User) CreateUser() (error){
     }
 }
 
+// Login with password
 func (user *User) Login() (string, error) {
     user.ID = 0
     if user.Password == "" {
@@ -161,6 +162,7 @@ func (user *User) Login() (string, error) {
 
 }
 
+// Login by OAuth without password
 func (user *User)OAuthLogin() (string, error) {
 	if err := orm.Db.Where("username = ? or email = ?", user.Username, user.Email).First(user).Error; err != nil {
 		return "", err

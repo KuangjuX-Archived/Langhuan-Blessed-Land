@@ -15,6 +15,7 @@ import (
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/HttpService"
 )
 
+// User register
 func Register(c *gin.Context)  {
     username := c.PostForm("username")
     password := c.PostForm("password")
@@ -31,7 +32,7 @@ func Register(c *gin.Context)  {
 		return
 	}
 
-	if !exist{
+	if exist{
 		json.JsonMsgWithSuccess(c, "Username has exist. Please enter a new username.")
 		return
 	}
@@ -83,8 +84,6 @@ func OAuthGithub(c *gin.Context){
 	url := "https://github.com/login/oauth/authorize?" + "client_id=" + client_id + "&redirect_uri=" + redirect_url
 	
 	c.Redirect(http.StatusMovedPermanently, url)
-	
-
 }
 
 func OAuthGithubRedirect(c *gin.Context){
