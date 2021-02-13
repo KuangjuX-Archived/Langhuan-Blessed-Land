@@ -43,14 +43,19 @@ func BFSComments(article_id int)(interface{}, error){
 }
 
 func dfs(id int, comments []Comment, m *[]Comments){
-	for _, v := range comments{
-		if v.ToCommentID == id{
+	for index, value := range comments{
+		if value.ToCommentID == id{
+			// init Comments element
 			var init_comment Comments
-			init_comment.ParentComment = v 
+			init_comment.ParentComment = value 
 			init_comment.ChildComments = make([]Comments, 0)
 			*m = append(*m, init_comment)
 			temp := *m
-			new_id := v.ID
+			new_id := value.ID
+			
+			// remove selected element
+			comments = append(comments[:index], comments[index+1:]...)
+
 			dfs(new_id, comments, &temp[len(temp)-1].ChildComments)
 		}
 	}
