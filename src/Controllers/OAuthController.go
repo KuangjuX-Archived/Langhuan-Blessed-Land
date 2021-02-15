@@ -17,8 +17,8 @@ import(
 
 
 func handlerUser(user *map[string]string, c *gin.Context){
-	key := {"login", "name", "email", "avatar_url"}
-	for _, k := range key:{
+	var keys = [...]string{"login", "name", "email", "avatar_url"}
+	for _, key := range keys:{
 		user[key] = c.PostForm(key)
 	}
 }
