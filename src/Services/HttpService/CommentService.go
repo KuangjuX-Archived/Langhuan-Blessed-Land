@@ -6,6 +6,7 @@ import(
 )
 
 type Comment = Models.Comment
+// Tree struct to describe comments
 type Comments struct{
 	ParentComment	Comment
 	ChildComments	[]Comments

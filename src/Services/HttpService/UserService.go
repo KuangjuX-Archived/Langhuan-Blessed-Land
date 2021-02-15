@@ -15,6 +15,7 @@ import(
 var DuplicatedUsername error = errors.New("Username has existed. Please modify username.")
 var PasswordError error = errors.New("You have changed password. Please login by current password")
 
+
 func GetGithubSecret()(string, string ,error){
 	client_id := GITHUB.ClientID
 	client_secret := GITHUB.ClientSecret
@@ -126,17 +127,21 @@ func LoginByGithub(user_info map[string]string)(string, error){
 				return "", err
 			}
 
-			user_id, _ := strconv.Atoi(last_id)
-			default_username = "user" + string(user_id)
-			user.Username = default_username
+			// TODO: modify username by CallBack function
+			return "", DuplicatedUsername
+
+			// Create User By default username
+			// user_id, _ := strconv.Atoi(last_id)
+			// default_username = "user" + string(user_id)
+			// user.Username = default_username
 			
-			if err := user.CreateUser(); err != nil{
-				return "", err
-			}
+			// if err := user.CreateUser(); err != nil{
+			// 	return "", err
+			// }
 
-			user.Password = default_password
+			// user.Password = default_password
 
-			token, err := user.OAuthLogin()
+			// token, err := user.OAuthLogin()
 
 			if err != nil{
 				return "", err

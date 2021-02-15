@@ -32,6 +32,7 @@ func InnitRouter() *gin.Engine{
         {
             oauth.GET("github", OAuthGithub)
             oauth.GET("github/redirect", OAuthGithubRedirect)
+            oauth.GET("github/rename", OAuthGithubRename)
         }
        
         
