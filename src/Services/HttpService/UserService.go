@@ -121,11 +121,11 @@ func LoginByGithub(user_info map[string]string)(string, error){
 			return token, nil
 		}else{
 			// Duplicate username
-			var default_username string
-			last_id, err := Models.GetLastUserInfoByKey("ID")
-			if err != nil{
-				return "", err
-			}
+			// var default_username string
+			// last_id, err := Models.GetLastUserInfoByKey("ID")
+			// if err != nil{
+			// 	return "", err
+			// }
 
 			// TODO: modify username by CallBack function
 			return "", DuplicatedUsername
@@ -143,11 +143,11 @@ func LoginByGithub(user_info map[string]string)(string, error){
 
 			// token, err := user.OAuthLogin()
 
-			if err != nil{
-				return "", err
-			}
+			// if err != nil{
+			// 	return "", err
+			// }
 
-			return token, nil
+			// return token, nil
 
 			}
 	}else{
