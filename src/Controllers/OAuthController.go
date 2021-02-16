@@ -4,7 +4,6 @@ import(
 	"strings"
 	"errors"
 	"strconv"
-	"time"
 	jsonparse "encoding/json"
 	"net/http"
 
@@ -15,22 +14,33 @@ import(
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/HttpService"
 )
 
-
-func handlerUser(user *map[string]string, c *gin.Context){
+var NotFoundField error = errors.New("Not Found Field.")
+func handlerUser(user *map[string]string, c *gin.Context)(error){
 	var keys = [...]string{"login", "name", "email", "avatar_url"}
-	for _, key := range keys:{
-		user[key] = c.PostForm(key)
+	for _, key := range keys {
+		value := c.PostForm(key)
+		if len(value) > 0 {
+			(*user)[key] = value
+		}else{
+			return NotFoundField
+		}
+		
 	}
+	return nil
 }
 
 func OAuthGithubRename(c *gin.Context) {
 	user := make(map[string]string)
-	handlerUser(&user)
-	token, err := HttpService.LoginByGithub(res)
+	err := handlerUser(&user, c)
+
+	if err != nil{
+		json.JsonError(c, err)
+	}
+	token, err := HttpService.LoginByGithub(user)
 
 	if err != nil{
 		if err == HttpService.DuplicatedUsername{
-			json.JsonMsgWithError(c, res, err)
+			json.JsonMsgWithError(c, user, err)
 			return 
 		}else{
 			json.JsonError(c, err)

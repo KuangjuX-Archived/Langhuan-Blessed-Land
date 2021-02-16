@@ -1,18 +1,14 @@
 package Controllers
 
 import (
-	"strings"
 	"errors"
 	"strconv"
 	"time"
-	jsonparse "encoding/json"
-	"net/http"
 
     "github.com/gin-gonic/gin"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/json"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/auth"
-	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Services/HttpService"
 )
 
 // User register
