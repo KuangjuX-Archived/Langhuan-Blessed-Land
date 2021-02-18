@@ -177,7 +177,7 @@ func LikeArticle(c *gin.Context){
 	json.JsonSuccess(c)
 }
 
-func FollowUser(c *gin.Context){
+func Follow(c *gin.Context){
 	follower_id, _ := strconv.Atoi(c.Param("follower_id"))
 	
 	data, err := auth.GetUserByToken(c)
@@ -195,6 +195,27 @@ func FollowUser(c *gin.Context){
 
 	json.JsonSuccess(c)
 
+}
+
+func UnFollow(c *gin.Context){
+	follower_id, _ := strconv.Atoi(c.Param("follower_id"))
+	
+	data, err := auth.GetUserByToken(c)
+
+	if err != nil{
+		json.JsonError(c, err)
+	}
+
+	user := data.(Models.User)
+
+	is_exist, err := user.IsExistFollow(follower_id)
+	if err != nil && is_exist{
+		user.UnFollow(follower_id)
+		json.JsonSuccess(c)
+		return 
+	}
+
+	json.JsonMsgWithError(c, "Fail to unfollow", err)
 }
 
 

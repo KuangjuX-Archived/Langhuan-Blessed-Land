@@ -15,6 +15,18 @@ type Follower struct{
 	UpdatedAt 	time.Time
 }
 
+func (user *User)IsExistFollow(follower_id int)(bool, error){
+	res := orm.Db.Where("user_id = ? and follower_id = ?", user.ID, follower_id).First(&Follower{})
+	err := res.Error
+	if err != nil && err == orm.ErrorRecordNotFound {
+		return false, nil
+	}else if err == nil {
+		return true, nil
+	}
+
+	return false, err
+}
+
 func (user *User)Follow(follower_id int)(error){
 	follower := &Follower{
 		UserID: int(user.ID),
@@ -24,6 +36,14 @@ func (user *User)Follow(follower_id int)(error){
 		return res.Error
 	}
 
+	return nil
+}
+
+func (user *User)UnFollow(follower_id int)(error){
+	res := orm.Db.Where("user_id = ? and follower_id = ?", user.ID, follower_id).Delete(Follower{})
+	if res.Error != nil{
+		return res.Error
+	}
 	return nil
 }
 
