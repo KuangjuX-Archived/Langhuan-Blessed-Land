@@ -10,5 +10,10 @@
         "server": "",
         "password": "",
         "databse": ""
+    },
+
+    "github-oauth":{
+        "client_id": "",
+        "client_secret": ""
     }
 }
