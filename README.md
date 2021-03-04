@@ -28,8 +28,8 @@ This project is named "Lang Huan Blessed Land" because "Lang Huan Blessed Land" 
 ```
 git clone https://github.com/KuangjuX/Langhuan-Blessed-Land.git
 cd Langhuan-Blessed-Land
-docker build -t Langhuan-Blessed-Land .
-docker run -p 8081:8081 -d Langhuan-Blessed-Land
+docker build -t langhuan .
+docker run -p 8081:8081 -d langhuan
 ```
 
 You can visit `http://baseurl:8081` to use the app.
