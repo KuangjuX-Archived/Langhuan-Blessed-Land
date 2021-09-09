@@ -24,9 +24,17 @@ type GithubOAuth struct{
 	ClientSecret string
 }
 
+type Postgre struct {
+	URL string
+	Username string 
+	Password string 
+	Database string
+}
+
 var MYSQL Mysql
 var REDIS Redis
 var GITHUB GithubOAuth
+var POSTGRE Postgre
 
 func init() {
 	// read mysql information from config file
@@ -43,6 +51,11 @@ func init() {
 	MYSQL.Username = viper.GetString(`mysql.username`)
 	MYSQL.Password = viper.GetString(`mysql.password`)
 	MYSQL.Database = viper.GetString(`mysql.database`)
+
+	POSTGRE.URL = viper.GetString(`postgresql.url`)
+	POSTGRE.Username = viper.GetString(`postgresql.username`)
+	POSTGRE.Password = viper.GetString(`postgresql.password`)
+	POSTGRE.Database = viper.GetString(`postgresql.database`)
 
 	REDIS.Server = viper.GetString(`redis.server`)
 	REDIS.Password = viper.GetString(`redis.password`)

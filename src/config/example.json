@@ -6,6 +6,13 @@
         "database": ""
     },
 
+    "postgresql": {
+        "url": "",
+        "username": "",
+        "password": "",
+        "database": ""
+    },
+
     "redis":{
         "server": "",
         "password": "",
