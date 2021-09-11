@@ -60,7 +60,7 @@ func InnitRouter() *gin.Engine{
             user.POST("unfollow/:follower_id", UnFollow)
             user.GET("getFollowers", GetFollowers)
             
-            //websocket test
+            // websocket test
             userchat := user.Group("chat")
             {
                 userchat.GET("/ws", Chat)
