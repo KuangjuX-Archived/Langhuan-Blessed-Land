@@ -2,6 +2,8 @@ package Models
 
 import (
 	"time"
+
+	orm "github.com/KuangjuX/Lang-Huan-Blessed-Land/DataBases/mysql"
 )
 
 // 电影元信息
@@ -16,7 +18,32 @@ type Movies struct {
 	Tags         string
 	Description  string
 	Score        int32
-	ReleaseData  time.Time
+	ReleaseDate  time.Time
 	CreateadAt   time.Time
 	UpdatedAt    time.Time
+}
+
+func CreateMovie(
+	name, directors, actors, screen_writer, language string,
+	length int16, score int32,
+	tags, description string,
+) (string, error) {
+	movie := Movies{
+		Name:         name,
+		Directors:    directors,
+		Actors:       actors,
+		ScreenWriter: screen_writer,
+		Language:     language,
+		Length:       length,
+		Score:        score,
+		Tags:         tags,
+		Description:  description,
+	}
+
+	res := orm.Db.Create(&movie)
+	if res.Error != nil {
+		return "Fail to create", res.Error
+	} else {
+		return "Success to create", nil
+	}
 }

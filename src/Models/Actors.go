@@ -6,10 +6,10 @@ type Actors struct {
 	ID          int64
 	Name        string
 	Gender      bool
-	BorthData   time.Time
+	BorthDate   time.Time
 	BorthArea   string
 	Avatar      string
 	Description string
-	CreateadAt  time.Time
+	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
