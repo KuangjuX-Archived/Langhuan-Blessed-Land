@@ -2,7 +2,7 @@ package Models
 
 import "time"
 
-type Actors struct {
+type Actor struct {
 	ID          int64
 	Name        string
 	Gender      bool

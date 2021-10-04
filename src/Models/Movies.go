@@ -7,7 +7,7 @@ import (
 )
 
 // 电影元信息
-type Movies struct {
+type Movie struct {
 	ID           int64
 	Name         string
 	Directors    string
@@ -28,7 +28,7 @@ func CreateMovie(
 	length int16, score int32,
 	tags, description string,
 ) (string, error) {
-	movie := Movies{
+	movie := Movie{
 		Name:         name,
 		Directors:    directors,
 		Actors:       actors,

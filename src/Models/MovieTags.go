@@ -2,7 +2,7 @@ package Models
 
 import "time"
 
-type MovieTags struct {
+type MovieTag struct {
 	ID         int64
 	Name       string
 	CreateadAt time.Time
