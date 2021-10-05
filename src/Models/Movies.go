@@ -19,7 +19,7 @@ type Movie struct {
 	Description  string
 	Score        int32
 	ReleaseDate  time.Time
-	CreateadAt   time.Time
+	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
 
