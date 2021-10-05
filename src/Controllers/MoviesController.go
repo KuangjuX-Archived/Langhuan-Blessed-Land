@@ -2,6 +2,7 @@ package Controllers
 
 import (
 	"strconv"
+	"time"
 
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Help/json"
 	"github.com/KuangjuX/Lang-Huan-Blessed-Land/Models"
@@ -18,10 +19,12 @@ func CreateMovie(c *gin.Context) {
 	score, _ := strconv.ParseInt(c.PostForm("score"), 10, 32)
 	tags := c.PostForm("tags")
 	description := c.PostForm("description")
+	release_date := c.PostForm("release_date")
+	date, err := time.Parse("2006-01-02T15:04:05.000Z", release_date)
 	msg, err := Models.CreateMovie(
 		name, directors, actors, screen_writer,
 		language, int16(length), int32(score),
-		tags, description,
+		tags, description, date,
 	)
 
 	if err != nil {

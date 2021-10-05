@@ -27,6 +27,7 @@ func CreateMovie(
 	name, directors, actors, screen_writer, language string,
 	length int16, score int32,
 	tags, description string,
+	release_date time.Time,
 ) (string, error) {
 	movie := Movie{
 		Name:         name,
@@ -38,6 +39,7 @@ func CreateMovie(
 		Score:        score,
 		Tags:         tags,
 		Description:  description,
+		ReleaseDate:  release_date,
 	}
 
 	res := orm.Db.Create(&movie)
