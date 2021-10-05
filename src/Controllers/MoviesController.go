@@ -33,3 +33,13 @@ func CreateMovie(c *gin.Context) {
 		json.JsonMsgWithSuccess(c, msg)
 	}
 }
+
+func FindMovieById(c *gin.Context) {
+	movie_id := c.Query("movie_id")
+	movie, err := Models.FindMovieById(movie_id)
+	if err != nil {
+		json.JsonMsgWithError(c, "Fail to find movie", err)
+	} else {
+		json.JsonDataWithSuccess(c, movie)
+	}
+}

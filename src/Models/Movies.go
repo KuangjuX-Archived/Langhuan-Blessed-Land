@@ -49,3 +49,9 @@ func CreateMovie(
 		return "Success to create", nil
 	}
 }
+
+func FindMovieById(id string) (Movie, error) {
+	var movie Movie
+	res := orm.Db.Where("id = ?", id).First(&movie)
+	return movie, res.Error
+}
